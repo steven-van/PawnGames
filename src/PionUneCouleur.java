@@ -1,16 +1,8 @@
 
-public class PionUneCouleur implements Pion {
-	private String couleur;
+public class PionUneCouleur extends Pion {
 	
-	@Override
-	public void setCouleur(String c) {
-		this.couleur = c;
-
+	public String toString() {
+		return null;
+		
 	}
-
-	@Override
-	public String getCouleur() {		
-		return this.couleur;
-	}
-
 }
