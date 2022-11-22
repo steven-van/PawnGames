@@ -2,6 +2,10 @@
 public abstract class Pion {
 	private String couleur;
 	
+	public Pion(String couleur) {
+		this.couleur = couleur;
+	}
+	
 	public void setCouleur(String c) {
 		this.couleur = c;
 	}
