@@ -22,6 +22,10 @@ public class Plateau {
 		if(isValidCoord(c)) this.cases[c.getY()][c.getX()] = p;
 	}
 	
+	public Pion getCase(Coord c) {
+		return this.cases[c.getY()][c.getX()];
+	}
+	
 	public boolean isValidCoord(Coord c) {
 		return c.getY() < this.nbLignes && c.getX() < this.nbColonnes;
 	}
