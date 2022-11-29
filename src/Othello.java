@@ -8,12 +8,12 @@ public class Othello extends Jeu2JoueursAPion {
 	
 	@Override
 	public void initialisationJeu() {
-		Pion pNoir1 = new PionDeuxCouleurs("Noir", "Blanc", "Noir");
-		Pion pNoir2 = new PionDeuxCouleurs("Noir", "Blanc", "Noir");
+		Pion pNoir1 = new PionDeuxCouleurs(Couleurs.NOIR, Couleurs.BLANC);
+		Pion pNoir2 = new PionDeuxCouleurs(Couleurs.NOIR, Couleurs.BLANC);
 		super.getPlateau().poser(pNoir1, new Coord(4, 5));
 		super.getPlateau().poser(pNoir2, new Coord(5, 4));
-		Pion pBlanc1 = new PionDeuxCouleurs("Blanc", "Blanc", "Noir");
-		Pion pBlanc2 = new PionDeuxCouleurs("Blanc", "Blanc", "Noir");
+		Pion pBlanc1 = new PionDeuxCouleurs(Couleurs.BLANC, Couleurs.NOIR);
+		Pion pBlanc2 = new PionDeuxCouleurs(Couleurs.BLANC, Couleurs.NOIR);
 		super.getPlateau().poser(pBlanc1, new Coord(4, 4));
 		super.getPlateau().poser(pBlanc2, new Coord(5, 5));
 	}
@@ -32,7 +32,9 @@ public class Othello extends Jeu2JoueursAPion {
 
 	@Override
 	public boolean peutJouer(Coord c) {
-		// TODO Auto-generated method stub
+		Joueur jCourant = super.getJoueurCourant();
+		Joueur jAdverse = super.getJoueurAdverse();
+		Pion p = new PionDeuxCouleurs(jCourant.getCouleur(), jAdverse.getCouleur());
 		return false;
 	}
 
@@ -49,8 +51,8 @@ public class Othello extends Jeu2JoueursAPion {
 	}
 	
 	public static void main(String[] args) {
-		Joueur j1 = new Joueur();
-		Joueur j2 = new Joueur();
+		Joueur j1 = new Joueur(Couleurs.NOIR);
+		Joueur j2 = new Joueur(Couleurs.BLANC);
 		IJeu othello = new Othello(j1, j2);
 		System.out.println(((Jeu2JoueursAPion) othello).getPlateau());
 	}

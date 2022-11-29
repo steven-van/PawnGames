@@ -1,15 +1,15 @@
 
 public abstract class Pion {
-	private String couleur;
+	private Couleurs couleur;
 	
-	public Pion(String couleur) {
+	public Pion(Couleurs couleur) {
 		this.couleur = couleur;
 	}
 	
-	public void setCouleur(String c) {
+	public void setCouleur(Couleurs c) {
 		this.couleur = c;
 	}
-	public String getCouleur() {
+	public Couleurs getCouleur() {
 		return this.couleur;
 	}
 }

@@ -1,16 +1,20 @@
 
 public class Joueur {
-	private String camp;
+	private Couleurs couleur;
 	
-	public String getCamp() {
-		return this.camp;
+	public Joueur(Couleurs couleur) {
+		this.couleur = couleur;
 	}
 	
-	public void setCamp(String c) {
-		this.camp = c;
+	public Couleurs getCouleur() {
+		return this.couleur;
+	}
+	
+	public void setCamp(Couleurs c) {
+		this.couleur = c;
 	}
 	
 	public String toString() {
-		return "Le joueur est dans le camp " + camp;
+		return "Le joueur est dans le camp " + couleur;
 	}
 }

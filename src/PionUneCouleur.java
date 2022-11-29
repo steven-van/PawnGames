@@ -1,11 +1,11 @@
 
 public class PionUneCouleur extends Pion {
 	
-	public PionUneCouleur(String couleur) {
+	public PionUneCouleur(Couleurs couleur) {
 		super(couleur);
 	}
 
 	public String toString() {
-		return super.getCouleur();
+		return super.getCouleur().toString();
 	}
 }
