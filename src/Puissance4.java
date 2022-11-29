@@ -25,7 +25,7 @@ public class Puissance4 extends Jeu2JoueursAPion {
 	}
 
 	@Override
-	public boolean peutJouer(Joueur j) {
+	public boolean peutJouer(Coord c) {
 		// TODO Auto-generated method stub
 		return false;
 	}

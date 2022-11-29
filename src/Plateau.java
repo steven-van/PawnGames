@@ -31,17 +31,11 @@ public class Plateau {
 		for(int i=0; i<this.cases.length; i++) {
 			for(int j=0; j<this.cases[i].length; j++) {
 				bld.append(this.cases[i][j]);
-				bld.append(" ");
+				bld.append("  ");
 			}
-			bld.append("\n");
+			bld.append("\n\n");
 		};
 		return bld.toString();
 	}
 	
-	public static void main(String[] args) {
-		Plateau plateau = new Plateau(10, 10);
-		Pion pion = new PionUneCouleur("jaune");
-		plateau.poser(pion, new Coord(2, 3));
-		System.out.println(plateau);
-	}
 }

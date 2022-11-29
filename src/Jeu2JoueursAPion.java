@@ -19,9 +19,8 @@ public abstract class Jeu2JoueursAPion implements IJeu {
 	@Override
 	public abstract boolean isVainqueur(Joueur j);
 
-	@Override
-	public abstract boolean peutJouer(Joueur j);
-
+	public abstract boolean peutJouer(Coord c);
+	
 	@Override
 	public abstract String saisie();
 
