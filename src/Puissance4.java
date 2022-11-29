@@ -1,6 +1,11 @@
 
 public class Puissance4 extends Jeu2JoueursAPion {
 
+	public Puissance4(Plateau plateau, Joueur joueur1, Joueur joueur2) {
+		super(plateau, joueur1, joueur2);
+		initialisationJeu();
+	}
+
 	@Override
 	public void initialisationJeu() {
 		// TODO Auto-generated method stub

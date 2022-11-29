@@ -3,18 +3,18 @@ public abstract class Jeu2JoueursAPion implements IJeu {
 	private Plateau plateau;
 	private Joueur joueur1;
 	private Joueur joueur2;
+	
+	public Jeu2JoueursAPion(Plateau plateau, Joueur joueur1, Joueur joueur2) {
+		this.plateau = plateau;
+		this.joueur1 = joueur1;
+		this.joueur2 = joueur2;
+	}
 
 	@Override
 	public abstract void initialisationJeu();
 
 	@Override
 	public abstract Joueur getPremierJoueur();
-
-	@Override
-	public boolean isFinDePartie() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public abstract boolean isVainqueur(Joueur j);
@@ -28,6 +28,12 @@ public abstract class Jeu2JoueursAPion implements IJeu {
 	@Override
 	public abstract void jouer();
 
+	@Override
+	public boolean isFinDePartie() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	public Joueur getJoueur1() {
 		return joueur1;
 	}
