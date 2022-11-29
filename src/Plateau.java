@@ -2,8 +2,8 @@
 
 public class Plateau {
 	private Pion[][] cases;
-	int nbLignes;
-	int nbColonnes;
+	private int nbLignes;
+	private int nbColonnes;
 	
 	public Plateau(int nbLignes, int nbColonnes) {
 		this.nbLignes = nbLignes;
@@ -26,6 +26,10 @@ public class Plateau {
 		return this.cases[c.getY()][c.getX()];
 	}
 	
+	public Pion[][] getTabCases() {
+		return this.cases;
+	}
+	
 	public boolean isValidCoord(Coord c) {
 		return c.getY() < this.nbLignes && c.getX() < this.nbColonnes;
 	}
@@ -41,5 +45,13 @@ public class Plateau {
 		};
 		return bld.toString();
 	}
+
+	public int getNbLignes() {
+		return this.nbLignes;
+	}
 	
+	public int getNbColonnes() {
+		return this.nbColonnes;
+	}
+
 }
