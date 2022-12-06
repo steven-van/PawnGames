@@ -19,11 +19,11 @@ public class Plateau {
 	
 	public void poser(Pion p, Coord c) {
 		//pions[y][x]
-		if(isValidCoord(c)) this.cases[c.getY()][c.getX()] = p;
+		if(isValidCoord(c)) this.cases[c.getY()-1][c.getX()-1] = p;
 	}
 	
 	public Pion getCase(Coord c) {
-		return this.cases[c.getY()][c.getX()];
+		return this.cases[c.getY()-1][c.getX()-1];
 	}
 	
 	public Pion[][] getTabCases() {
@@ -31,7 +31,7 @@ public class Plateau {
 	}
 	
 	public boolean isValidCoord(Coord c) {
-		return c.getY() < this.nbLignes && c.getX() < this.nbColonnes;
+		return c.getY() <= this.nbLignes && c.getX() <= this.nbColonnes;
 	}
 	
 	public String toString() {
