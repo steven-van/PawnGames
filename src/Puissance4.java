@@ -1,12 +1,32 @@
 import java.util.Scanner;
 
 public class Puissance4 extends Jeu2JoueursAPion {
+	private int nbPionsJ1;
+	private int nbPionsJ2;
 	
 	public Puissance4(Joueur joueur1, Joueur joueur2) {
 		super(new Plateau(6,7), joueur1, joueur2);
+		this.nbPionsJ1 = 21;
+		this.nbPionsJ2 = 21;
 		initialisationJeu();
 	}
+	
+	public int getNbPionsJ1() {
+		return this.nbPionsJ1;
+	}
+	
+	public int getNbPionsJ2() {
+		return this.nbPionsJ2;
+	}
 
+	public int setNbPionsJ1() {
+		return this.nbPionsJ1;
+	}
+	
+	public int setNbPionsJ2() {
+		return this.nbPionsJ2;
+	}
+	
 	@Override
 	public void initialisationJeu() {
 		// TODO Auto-generated method stub
@@ -38,11 +58,19 @@ public class Puissance4 extends Jeu2JoueursAPion {
 
 	@Override
 	public void jouer() {
-		String col = saisie();
+		int col = Integer.parseInt(saisie());
 		for(int i = 0; i < super.getPlateau().getNbLignes(); i++) {
-			
-		};
-
+			if(super.getPlateau().getTabCases()[i][col] == null) {
+				Coord c = new Coord(col, i-1);
+				if(peutJouer(c)) {
+					Pion p = new PionUneCouleur(super.getJoueurCourant().getCouleur());
+					super.getPlateau().poser(p, c);
+				}
+				
+			} 
+		}
+		System.out.println("La colonne est déja remplie");
+		
 
 	}
 
