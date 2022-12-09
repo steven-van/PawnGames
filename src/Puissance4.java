@@ -65,4 +65,10 @@ public class Puissance4 extends Jeu2JoueursAPion {
 		return j;
 	}
 
+	@Override
+	public boolean isFinDePartie() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -43,10 +43,7 @@ public abstract class Jeu2JoueursAPion implements IJeu {
 	public abstract void jouer();
 
 	@Override
-	public boolean isFinDePartie() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public abstract boolean isFinDePartie();
 	
 	public Joueur getJoueur1() {
 		return joueur1;
