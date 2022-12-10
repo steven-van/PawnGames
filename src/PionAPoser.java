@@ -1,13 +1,14 @@
 
 public class PionAPoser extends Pion {
-	
-	public PionAPoser() {
+	String symbole;
+	public PionAPoser(String symbole) {
 		super(Couleurs.POSER);
+		this.symbole = symbole;
 	}
 	
 	@Override
 	public String toString() {
-		return "---";
+		return symbole;
 	}
 
 }

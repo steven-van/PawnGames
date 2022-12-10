@@ -4,8 +4,8 @@ public class Coord {
 	private int y;
 	
 	public Coord(int colonne, int ligne) {
-		this.y = ligne;
 		this.x = colonne;
+		this.y = ligne;
 	}
 	public int getX() {
 		return this.x;

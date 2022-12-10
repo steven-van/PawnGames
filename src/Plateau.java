@@ -22,14 +22,9 @@ public class Plateau {
 	public void poser(Pion p, Coord c) {
 		//pions[y][x]
 		if(isValidCoord(c)) {
-			if(p == null) {
-				this.cases[c.getY()-1][c.getX()-1] = null;
-			} else {
-				this.cases[c.getY()-1][c.getX()-1] = p;
-				this.nbPions++;
-			}
+			this.cases[c.getY()-1][c.getX()-1] = p;
+			if(p != null) this.nbPions++;
 		}
-		
 	}
 	
 	public Pion getCase(Coord c) {

@@ -1,21 +1,21 @@
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Othello extends Jeu2JoueursAPion {
 	
 	// joueur 1 = NOIRS
-	// joueur 2 = BLANCS
-	
+	// joueur 2 = BLANC
+
 	final static int COTE = 8;
-	private Coord[] coordPionsAttaquables;
+
 	// les coords des pions attaquables par coord de coup possible
-	@SuppressWarnings("rawtypes")
 	Map coupsPossibles = new HashMap<Coord, Coord[]>();
 	Map nbPionsAttaquables = new HashMap<Coord, Integer>();
-	//private int nbPionsAttaquables;
-	
+
 	public Othello(Joueur joueur1, Joueur joueur2) {
 		 super(new Plateau(COTE, COTE), joueur1, joueur2);
 		 initialisationJeu();
@@ -32,6 +32,8 @@ public class Othello extends Jeu2JoueursAPion {
 		Pion pBlanc2 = new PionDeuxCouleurs(Couleurs.BLANC, Couleurs.NOIR);
 		super.getPlateau().poser(pBlanc1, new Coord(4, 4));
 		super.getPlateau().poser(pBlanc2, new Coord(5, 5));
+		super.getJoueur1().incPts(2);
+		super.getJoueur2().incPts(2);
 	}
 
 	@Override
@@ -41,71 +43,78 @@ public class Othello extends Jeu2JoueursAPion {
 
 	@Override
 	public boolean isVainqueur(Joueur j) {
-		return false;
+		Joueur joueurAdverse = (j.getCouleur() == super.getJoueurCourant().getCouleur()) ? super.getJoueurAdverse() : super.getJoueurCourant();
+		return j.getPts() > joueurAdverse.getPts();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public boolean searchCoupsPossibles() {
 		// case fait partie du plateau
 		initCoupsPossibles();
-
-		//initPionsAttaquables();
 		
 		for(int li=1; li <= super.getPlateau().getNbLignes(); li++) {
 			for(int col=1; col <= super.getPlateau().getNbColonnes(); col++) {
 				//System.out.println(col+";"+li);
-				Coord[] pionsAttaquablesTmp = new Coord[COTE*COTE];
-				int nbPionsAttaquablesTmp = 0;
 				
-				// pour chaque direction
-				for (Directions d : Directions.values()){
+				if(super.getPlateau().getCase(new Coord(col, li)) == null) {
 					
-					Pion caseTmp;
+					Coord[] pionsAttaquablesTmp = new Coord[COTE*COTE];
+					int nbPionsAttaquablesTmp = 0;
 					
-					// case associée à la direction
-					int xDir = d.getX();
-					int yDir = d.getY();
-					
-					Coord[] tabCoordPionsTmp = new Coord[COTE];
-					caseTmp = super.getPlateau().getCase(new Coord(li, col));
-					int i=0;
-					int j=0;
-					int currentX;
-					int currentY;
-					
-					do {
-						i++;
-						currentX = col + xDir*i;
-						currentY = li + yDir*i;
+					// pour chaque direction
+					for (Directions d : Directions.values()){
 						
-						if(super.getPlateau().isValidCoord(new Coord(currentX, currentY))){
-							
-							caseTmp = super.getPlateau().getCase(new Coord(currentX, currentY));
-							
-							if(caseTmp != null) {
-								if(caseTmp.getCouleur() != super.getJoueurCourant().getCouleur()) {
-									// cette case est susceptible  d'être attaquée
-									j++;
-									tabCoordPionsTmp[j-1] = new Coord(currentX, currentY);
-								}
-								else if(j > 0){
-									//System.out.println("ATTAQUABLE par direction : "+ d +" !!");
-									// on tombe sur la couleur du joueur courant
-									// => on peut attaquer les cases précédentes
-									for(int l=0; l<j; l++) {
-										nbPionsAttaquablesTmp++;
-										pionsAttaquablesTmp[nbPionsAttaquablesTmp-1] = tabCoordPionsTmp[l];
+						Pion caseTmp;
+						
+						// case associée à la direction
+						int xDir = d.getX();
+						int yDir = d.getY();
+						
+						Coord[] tabCoordPionsTmp = new Coord[COTE];
+						caseTmp = super.getPlateau().getCase(new Coord(col, li));
+						int i=0;
+						int j=0;
+						int currentX;
+						int currentY;
+						
+						do {
+							i++;
+							currentX = col + xDir*i;
+							currentY = li + yDir*i;
+							Coord coordTmp = new Coord(currentX, currentY);
+					
+							if(super.getPlateau().isValidCoord(coordTmp)){
+								
+								caseTmp = super.getPlateau().getCase(coordTmp);
+								
+								if(caseTmp != null) {
+									
+									if(caseTmp.getCouleur() == super.getJoueurAdverse().getCouleur()) {
+										// cette case est susceptible  d'être attaquée
+										j++;
+										tabCoordPionsTmp[j-1] = coordTmp;
+									}
+									else if(caseTmp.getCouleur() == super.getJoueurCourant().getCouleur()){
+										
+										if(j > 0){
+											// on tombe sur la couleur du joueur courant
+											// => on peut attaquer les cases précédentes
+											for(int l=0; l<j; l++) {
+												nbPionsAttaquablesTmp++;
+												pionsAttaquablesTmp[nbPionsAttaquablesTmp-1] = tabCoordPionsTmp[l];
+											}
+										}
 									}
 								}
 							}
-						}
-					} while((caseTmp != null) && (caseTmp.getCouleur() != super.getJoueurCourant().getCouleur()));
-				}
-				// aucune case attaquable
-				if(nbPionsAttaquablesTmp > 0) {
-					Coord cTmp = new Coord(col, li);
-					this.nbPionsAttaquables.put(cTmp, new Integer(nbPionsAttaquablesTmp));
-					this.coupsPossibles.put(cTmp, pionsAttaquablesTmp);
+						} while((caseTmp != null) && (caseTmp.getCouleur() != super.getJoueurCourant().getCouleur()));
+					}
+					// aucune case attaquable
+					if(nbPionsAttaquablesTmp > 0) {
+						Coord cTmp = new Coord(col, li);
+						this.nbPionsAttaquables.put(cTmp, new Integer(nbPionsAttaquablesTmp));
+						this.coupsPossibles.put(cTmp, pionsAttaquablesTmp);
+					}
 				}
 			}
 		}
@@ -134,118 +143,194 @@ public class Othello extends Jeu2JoueursAPion {
 		this.nbPionsAttaquables = new HashMap<Coord, Integer>();
 	}
 
+	// ----------------------
+	// source : https://www.baeldung.com/java-check-string-number
+	public static boolean isNumeric(String strNum) {
+	    if (strNum == null) {
+	        return false;
+	    }
+	    try {
+	        double d = Double.parseDouble(strNum);
+	    } catch (NumberFormatException nfe) {
+	        return false;
+	    }
+	    return true;
+	}
+	// ----------------------
+	
 	@Override
 	public String saisie() {
 		Scanner scanner = new Scanner(System.in);
 		boolean erreur = false;
-		boolean saisieValide = false;
-		int ligne=-1; int colonne=-1;
-		String aSaisir = "colonne";
-		int saisi;
+		boolean nombre = true;
+		//boolean saisieValide = false;
 		
-		System.out.println("Coups possibles (colonne;ligne): ");
-		StringBuilder str = new StringBuilder();
+		String choixStr="";
+		int choixInt=-1;
 		
+		do {
+			if(erreur) { 
+				System.out.println("Mauvaise saisie, veuillez entrer un nombre entre 1 et "+this.coupsPossibles.size());
+			}
+			else {
+				System.out.println("Veuillez choisir un coup possible parmis les propositions ci-dessus entre 1 et "+this.coupsPossibles.size());
+			}
+			System.out.print("Votre choix : ");
+			
+			choixStr = scanner.next();
+			
+			if(isNumeric(choixStr))choixInt=Integer.parseInt(choixStr);
+			erreur = !(nombre && choixInt > 0 && choixInt <= this.coupsPossibles.size());
+		} while (erreur);
+		
+		
+		//scanner.close(); 
+		Coord coordChoisie = getCoupPossible(choixInt-1);
+		return coordChoisie.getX() + ";" + coordChoisie.getY();
+	}
+	
+	@Override
+	public boolean isFinDePartie() {
+		return super.getPlateau().isFull() && isVainqueur(super.getJoueurCourant());
+	}
+	
+	private Coord getCoupPossible(int i) {
+		Set<Coord> keySet = this.coupsPossibles.keySet();
+		Coord[] keyArray = keySet.toArray(new Coord[keySet.size()]);
+		return keyArray[i];
+	}
+	
+	private void remettreNullCoupsPossibles() {
 		Iterator<Map.Entry<Coord, Coord[]>> iterator = this.coupsPossibles.entrySet().iterator();
-        
 		while (iterator.hasNext()) {
+            Map.Entry<Coord, Coord[]> entry = iterator.next();	
+        	super.getPlateau().poser(null, new Coord(entry.getKey().getX(), entry.getKey().getY()));  
+        }
+	}
+	
+	private void poserNullCoupsPossibles() {
+		int j=0;
+		Iterator<Map.Entry<Coord, Coord[]>> iterator = this.coupsPossibles.entrySet().iterator();
+		while (iterator.hasNext()) {
+			j++;
+            Map.Entry<Coord, Coord[]> entry = iterator.next();	
+            //System.out.println(entry.getKey().getX()+" "+ entry.getKey().getY());
+        	super.getPlateau().poser(new PionAPoser("("+j+")"), new Coord(entry.getKey().getX(), entry.getKey().getY()));  
+        }
+	}
+
+	private String afficherCoupsPossibles() {
+		int j=0;
+		StringBuilder str = new StringBuilder();
+		Iterator<Map.Entry<Coord, Coord[]>> iterator = this.coupsPossibles.entrySet().iterator();
+		while (iterator.hasNext()) {
+			j++;
             Map.Entry<Coord, Coord[]> entry = iterator.next();
-            str.append("Key : (" + entry.getKey().getX() + ";" + entry.getKey().getY() + ") => values : ");
+            str.append("("+ j + ") Coup : (" + entry.getKey().getX() + ";" + entry.getKey().getY() + ") => Attaquables : ");
     
             for(int i=0; i < (int) this.nbPionsAttaquables.get(entry.getKey()); i++) {
             	str.append("(" + entry.getValue()[i].getX() + ";" + entry.getValue()[i].getY() + ") ");
             }
             
             str.append("\n");
+            
         }
-		System.out.println(str.toString());
-		
-		do {
-			if(erreur) { 
-				System.out.println("Mauvaise saisie, veuillez entrer un nombre entre 1 et "+COTE);
-			}
-			else {
-				System.out.println("Veuillez entrer une "+aSaisir+" (1 à "+COTE+") du pion que vous voulez placer");
-			}
-			System.out.print("Votre choix : ");
-			saisi = scanner.nextInt();
-			if(!erreur) {
-				if(aSaisir == "colonne") {
-					aSaisir = "ligne";
-					colonne = saisi;
-				} else if(aSaisir == "ligne") {
-					ligne = saisi; break;
-				}
-			}
-			if(saisieValide = (saisi < 1 || saisi > COTE)){
-				erreur = true;
-			}
-		} while (!saisieValide);
-		
-		//scanner.close(); 
-		return Integer.toString(colonne)+";"+Integer.toString(ligne);
+		return str.toString();
 	}
 	
 	@Override
-	public boolean isFinDePartie() {
-		return isVainqueur(super.getJoueurCourant()) || super.getPlateau().isFull();
-	}
-
-	@Override
 	public void jouer() {
+		boolean jPeutJouer=true;
 		do {
-			System.out.println("C'est aux "+super.getJoueurCourant().getCouleur()+"S de jouer.");
+			System.out.println("C'est aux "+super.getJoueurCourant().getCouleur()+"S de jouer (Pts : " + +super.getJoueurCourant().getPts() + ")\n");
 			
 			if(searchCoupsPossibles()) {
 				
-				Iterator<Map.Entry<Coord, Coord[]>> iterator = this.coupsPossibles.entrySet().iterator();
-				
-				while (iterator.hasNext()) {
-		            Map.Entry<Coord, Coord[]> entry = iterator.next();	
-	            	super.getPlateau().poser(new PionAPoser(), new Coord(entry.getKey().getX(), entry.getKey().getY()));  
-		        }
+				poserNullCoupsPossibles();
 				System.out.println(this.getPlateau());
+				System.out.println("Coups possibles (colonne;ligne): ");
+				System.out.println(afficherCoupsPossibles());
 				
-				String saisie = saisie();
-				int x = Integer.parseInt(saisie.split(";")[0]);
-				int y = Integer.parseInt(saisie.split(";")[1]);
-				Coord coup = new Coord(x, y);
+				boolean coup_accepte;
 				
-				if(peutJouer(coup)) {
-					System.out.println("Possible :\n");
-			        
-					iterator = this.coupsPossibles.entrySet().iterator();
-					while (iterator.hasNext()) {
-			            Map.Entry<Coord, Coord[]> entry = iterator.next();
-			            if((entry.getKey().getX() == coup.getX()) && (entry.getKey().getY() == coup.getY())) {
-			            	
-			            	for(int i=0; i < (int) this.nbPionsAttaquables.get(entry.getKey()); i++) {
-			            		((PionDeuxCouleurs) super.getPlateau().getCase(new Coord(entry.getValue()[i].getX(), entry.getValue()[i].getY()))).changeCouleur();
-			                }
-			            }
-			        }
+				do {	
+					String saisie = saisie();
+					int x = Integer.parseInt(saisie.split(";")[0]);
+					int y = Integer.parseInt(saisie.split(";")[1]);
+					Coord coup = new Coord(x, y);
+				
+					coup_accepte = peutJouer(coup);
 					
-					iterator = this.coupsPossibles.entrySet().iterator();
-					while (iterator.hasNext()) {
-			            Map.Entry<Coord, Coord[]> entry = iterator.next();	
-		            	super.getPlateau().poser(null, new Coord(entry.getKey().getX(), entry.getKey().getY()));  
-			        }
+					if(coup_accepte) {
+				        
+						// dépôt pion et attaque
+						Iterator<Map.Entry<Coord, Coord[]>>iterator = this.coupsPossibles.entrySet().iterator();
+						while (iterator.hasNext()) {
+				            Map.Entry<Coord, Coord[]> entry = iterator.next();
+				            if((entry.getKey().getX() == coup.getX()) && (entry.getKey().getY() == coup.getY())) {
+				            	
+				            	// maj des points
+				            	super.getJoueurCourant().incPts((int)this.nbPionsAttaquables.get(entry.getKey()));
+				            	
+				            	// attaque
+				            	for(int i=0; i < (int) this.nbPionsAttaquables.get(entry.getKey()); i++) {
+				            		((PionDeuxCouleurs) super.getPlateau().getCase(new Coord(entry.getValue()[i].getX(), entry.getValue()[i].getY()))).changeCouleur();
+				                }
+				            }
+				        }
+						
+						remettreNullCoupsPossibles();
+						
+						Pion nouveauPion = new PionDeuxCouleurs(super.getJoueurCourant().getCouleur(), super.getJoueurAdverse().getCouleur());
+						super.getPlateau().poser(nouveauPion, coup);
+						
+						Joueur j = (super.getJoueurCourant().getCouleur() ==  super.getJoueur1().getCouleur()) ? super.getJoueur2() : super.getJoueur1();
+						
+						super.setJoueurCourant(j);
+						
+						System.out.println(this.getPlateau());
+					} else {
+						System.out.println("\n### Vous ne pouvez pas jouer ce coup ###");
+					}
 					
-					Pion nouveauPion = new PionDeuxCouleurs(super.getJoueurCourant().getCouleur(), super.getJoueurAdverse().getCouleur());
-					super.getPlateau().poser(nouveauPion, coup);
-					
-					Joueur j = (super.getJoueurCourant().getCouleur() ==  super.getJoueur1().getCouleur()) ? super.getJoueur2() : super.getJoueur1();
-					super.setJoueurCourant(j);
-				} else {
-					System.out.println("Vous ne pouvez pas jouer ce coup.");
-				}
+				} while(!coup_accepte);
 				
 			} else {
 				System.out.println("Vous ne pouvez rien jouer, passez votre tour.");
+				if(!jPeutJouer) break;
+				else jPeutJouer = false;
 			}
-			System.out.println(this.getPlateau());
+
+			System.out.println("-------------------------------------");
 		} while(!this.isFinDePartie());
+		
+		
 
 	}
 
 }
+
+/*
+int ligne=-1; int colonne=-1;
+String aSaisir = "colonne";
+do {
+	if(erreur) { 
+		System.out.println("Mauvaise saisie, veuillez entrer un nombre entre 1 et "+COTE);
+	}
+	else {
+		System.out.println("Veuillez entrer une "+aSaisir+" (1 à "+COTE+") du pion que vous voulez placer");
+	}
+	System.out.print("Votre choix : ");
+	saisi = scanner.nextInt();
+	if(!erreur) {
+		if(aSaisir == "colonne") {
+			aSaisir = "ligne";
+			colonne = saisi;
+		} else if(aSaisir == "ligne") {
+			ligne = saisi; break;
+		}
+	}
+	if(saisieValide = (saisi < 1 || saisi > COTE)){
+		erreur = true;
+	}
+} while (!saisieValide);*/
