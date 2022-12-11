@@ -16,6 +16,8 @@ public class Othello extends Jeu2JoueursAPion {
 	Map coupsPossibles = new HashMap<Coord, Coord[]>();
 	Map nbPionsAttaquables = new HashMap<Coord, Integer>();
 
+	boolean personnePeutJouer=false;
+	
 	public Othello(Joueur joueur1, Joueur joueur2) {
 		 super(new Plateau(COTE, COTE), joueur1, joueur2);
 		 initialisationJeu();
@@ -44,7 +46,12 @@ public class Othello extends Jeu2JoueursAPion {
 	@Override
 	public boolean isVainqueur(Joueur j) {
 		Joueur joueurAdverse = (j.getCouleur() == super.getJoueurCourant().getCouleur()) ? super.getJoueurAdverse() : super.getJoueurCourant();
-		return j.getPts() > joueurAdverse.getPts();
+		return (j.getPts() > joueurAdverse.getPts());
+	}
+	
+	@Override
+	public boolean isFinDePartie() {
+		return super.getPlateau().isFull() || personnePeutJouer;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -60,10 +67,11 @@ public class Othello extends Jeu2JoueursAPion {
 					
 					Coord[] pionsAttaquablesTmp = new Coord[COTE*COTE];
 					int nbPionsAttaquablesTmp = 0;
+					boolean attaque = false;
 					
 					// pour chaque direction
 					for (Directions d : Directions.values()){
-						
+						//System.out.println(d);
 						Pion caseTmp;
 						
 						// case associée à la direction
@@ -72,34 +80,35 @@ public class Othello extends Jeu2JoueursAPion {
 						
 						Coord[] tabCoordPionsTmp = new Coord[COTE];
 						caseTmp = super.getPlateau().getCase(new Coord(col, li));
-						int i=0;
-						int j=0;
-						int currentX;
-						int currentY;
+						int i=0; // le nb de pas dans une direction 
+						int j=0; // le nb de cases attaquées dans une direction
+						int currentX, currentY;
+						
+						attaque = false;
 						
 						do {
-							i++;
+							i++; // le nb de pas dans une direction
 							currentX = col + xDir*i;
 							currentY = li + yDir*i;
-							Coord coordTmp = new Coord(currentX, currentY);
+							Coord coordTmp = new Coord(currentX, currentY); // le nouveau pas
 					
 							if(super.getPlateau().isValidCoord(coordTmp)){
 								
-								caseTmp = super.getPlateau().getCase(coordTmp);
+								caseTmp = super.getPlateau().getCase(coordTmp); // la case correspondante
 								
-								if(caseTmp != null) {
+								if(caseTmp != null) { // la case est occupée
 									
-									if(caseTmp.getCouleur() == super.getJoueurAdverse().getCouleur()) {
+									if(caseTmp.getCouleur() == super.getJoueurAdverse().getCouleur()) { // par un pion adverse
 										// cette case est susceptible  d'être attaquée
 										j++;
 										tabCoordPionsTmp[j-1] = coordTmp;
 									}
-									else if(caseTmp.getCouleur() == super.getJoueurCourant().getCouleur()){
-										
+									else if(caseTmp.getCouleur() == super.getJoueurCourant().getCouleur()){ // par lui-même
+										attaque = true;
 										if(j > 0){
 											// on tombe sur la couleur du joueur courant
 											// => on peut attaquer les cases précédentes
-											for(int l=0; l<j; l++) {
+											for(int l=0; l<j; l++) { // pour chaque case attaquable avant
 												nbPionsAttaquablesTmp++;
 												pionsAttaquablesTmp[nbPionsAttaquablesTmp-1] = tabCoordPionsTmp[l];
 											}
@@ -107,7 +116,8 @@ public class Othello extends Jeu2JoueursAPion {
 									}
 								}
 							}
-						} while((caseTmp != null) && (caseTmp.getCouleur() != super.getJoueurCourant().getCouleur()));
+						} while((caseTmp != null) && (!attaque));
+						
 					}
 					// aucune case attaquable
 					if(nbPionsAttaquablesTmp > 0) {
@@ -187,11 +197,6 @@ public class Othello extends Jeu2JoueursAPion {
 		//scanner.close(); 
 		Coord coordChoisie = getCoupPossible(choixInt-1);
 		return coordChoisie.getX() + ";" + coordChoisie.getY();
-	}
-	
-	@Override
-	public boolean isFinDePartie() {
-		return super.getPlateau().isFull() && isVainqueur(super.getJoueurCourant());
 	}
 	
 	private Coord getCoupPossible(int i) {
@@ -297,14 +302,23 @@ public class Othello extends Jeu2JoueursAPion {
 				
 			} else {
 				System.out.println("Vous ne pouvez rien jouer, passez votre tour.");
-				if(!jPeutJouer) break;
-				else jPeutJouer = false;
+				if(!jPeutJouer) { personnePeutJouer = true; break;
+				} else { jPeutJouer = false;}
 			}
 
 			System.out.println("-------------------------------------");
 		} while(!this.isFinDePartie());
 		
-		
+		Joueur vainqueur = 
+				isVainqueur(super.getJoueur1()) ? 
+						super.getJoueur1() : 
+							((isVainqueur(super.getJoueur2()) ? 
+									super.getJoueur2():null));
+		if(vainqueur == null) {
+			System.out.println("égalité avec " + super.getJoueur1().getPts() + " pts chacun.");
+		} else {
+			System.out.println(vainqueur + " a gagné avec "+vainqueur.getPts()+" pts.");
+		}
 
 	}
 

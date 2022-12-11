@@ -4,7 +4,7 @@ public enum Directions {
 	SUD(0, 1), 
 	EST(1, 0), 
 	OUEST(-1, 0), 
-	NORD_EST(-1, 1), 
+	NORD_EST(1, -1), 
 	NORD_OUEST(-1, -1), 
 	SUD_EST(1, 1), 
 	SUD_OUEST(-1, 1);
