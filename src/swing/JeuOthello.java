@@ -53,12 +53,14 @@ public class JeuOthello extends JMenuBar {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
                 JButton b = new JButton();
-                if ((i + j) % 2 == 0) {
+                b.setBackground(Color.decode("#FFEFED"));
+                p.add(b);
+                /*if ((i + j) % 2 == 0) {
                     b.setBackground(Color.white);
                 } else {
                     b.setBackground(Color.BLACK);
                 }
-                p.add(b);
+                p.add(b);*/
             }
         }
         frame.add(p);
@@ -68,7 +70,7 @@ public class JeuOthello extends JMenuBar {
         frame.setTitle("Othello");
         frame.setLocationRelativeTo(null); //On centre la fenêtre sur l'écran
         frame.setResizable(false); //On interdit la redimensionnement de la fenêtre
-        frame.setVisible(true);
+        
     }
 }
 
