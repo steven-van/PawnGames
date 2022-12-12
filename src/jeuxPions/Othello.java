@@ -20,7 +20,7 @@ public class Othello extends Jeu2JoueursAPion {
 	// joueur 1 = NOIRS
 	// joueur 2 = BLANC
 
-	final static int COTE = 8;
+	private final static int COTE = 8;
 
 	// les coords des pions attaquables par coord de coup possible
 	Map coupsPossibles = new HashMap<Coord, Coord[]>();

@@ -8,14 +8,16 @@ import utileJeux.Coord;
 import utileJeux.Plateau;
 
 public class Puissance4 extends Jeu2JoueursAPion {
+	private static final int NB_LIGNE_PAR_DEFAUT = 6;
+	private static final int NB_COLONNE_PAR_DEFAUT 	= 7;
 	private int nbPionsJ1;
 	private int nbPionsJ2;
 	
 	public Puissance4(Joueur joueur1, Joueur joueur2) {
-		super(new Plateau(6,7), joueur1, joueur2);
+		super(new Plateau(NB_LIGNE_PAR_DEFAUT,NB_COLONNE_PAR_DEFAUT), joueur1, joueur2);
 		this.nbPionsJ1 = 21;
 		this.nbPionsJ2 = 21;
-		initialisationJeu();
+		super.setJoueurCourant(getPremierJoueur());
 	}
 	
 	public int getNbPionsJ1() {
@@ -42,7 +44,31 @@ public class Puissance4 extends Jeu2JoueursAPion {
 
 	@Override
 	public boolean isVainqueur(Joueur j) {
-		// TODO Auto-generated method stub
+		int ligMax = super.getPlateau().getNbLignes();
+		int colMax = super.getPlateau().getNbColonnes(); 
+
+		for(int indiceLig=0; indiceLig<ligMax; indiceLig++)
+			{
+				for(int indiceCol=0; indiceCol<colMax; indiceCol++)
+				{
+					if (this.getPlateau().getTabCases()[indiceLig][indiceCol] != null) 
+					{
+						if ( indiceCol<=colMax 	&& compterJeton(indiceLig, indiceCol, 1, 1) == 4
+					 			// diagonale : vers le bas et à droite 
+							|| indiceCol<=colMax && compterJeton(indiceLig, indiceCol, -1, 1) == 4
+								// vers le haut et à droite
+							|| indiceLig<=ligMax  && compterJeton(indiceLig, indiceCol, 0, 1) == 4
+								// horizontal vers la droite
+							|| indiceLig<= ligMax && compterJeton(indiceLig, indiceCol, 1, 0) == 4
+								// vertical du haut vers le bas
+							)
+						{
+							return true;
+						}
+					}
+				}
+			}
+
 		return false;
 	}
 
@@ -103,13 +129,14 @@ public class Puissance4 extends Jeu2JoueursAPion {
 		int max = 2;
 		int numJoueur = (min + (int)(Math.random() * (max - min) + 1));
 		Joueur j = numJoueur == 1 ? super.getJoueur1() : super.getJoueur2();
-		super.setJoueurCourant(j);
 		return j;
 	}
 
 	@Override
 	public boolean isFinDePartie() {
-		if(super.getPlateau().isFull() || isVainqueur(super.getJoueur1()) || isVainqueur(super.getJoueur2())) {
+		if(super.getPlateau().isFull() 
+				|| isVainqueur(super.getJoueur1()) 
+				|| isVainqueur(super.getJoueur2())) {
 			return true;
 		} else {
 			return false;
@@ -117,50 +144,21 @@ public class Puissance4 extends Jeu2JoueursAPion {
 	
 	}
 	
-	public boolean estGagnant()
-	{
-		int ligMax = super.getPlateau().getNbLignes();
-		int colMax = super.getPlateau().getNbColonnes(); 
 
-		for(int indiceLig=0; indiceLig<ligMax; indiceLig++)
-			{
-				for(int indiceCol=0; indiceCol<colMax; indiceCol++)
-				{
-					if (this.getPlateau().getTabCases()[indiceLig][indiceCol] != null) 
-					{
-						if ( indiceCol<=colMax 	&& compterJeton(indiceLig, indiceCol, 1, 1) == 4
-					 				// diagonale : vers le bas et à droite 
-							|| indiceCol<=colMax 	&& compterJeton(indiceLig, indiceCol, -1, 1) == 4
-									// vers le haut et à droite
-							|| indiceLig<=ligMax  	&& compterJeton(indiceLig, indiceCol, 0, 1) == 4
-									// horizontal vers la droite
-							|| indiceLig<= ligMax	&& compterJeton(indiceLig, indiceCol, 1, 0) == 4
-								// vertical du haut vers le bas
-							)
-						{
-							return true;
-						}
-					}
-				}
-			}
-
-		return false;
-	}
 	
 	private int compterJeton(int lig, int col, int ligDir, int colDir)
 	{
-		int cpt 	=	0; 		// compte le nombre de jeton aligné
-		int ligCpt 	=	lig;	// s'occupe de la direction de la ligne (nord ou sud) du comptage des jetons
-		int colCpt 	=	col; 	// s'occupe de la direction la colonne (ouest ou est) du comptage des jetons
+		int cpt = 0; 		// compte le nombre de jeton aligné
+		int ligCpt = lig;	// s'occupe de la direction de la ligne (nord ou sud) du comptage des jetons
+		int colCpt = col; 	// s'occupe de la direction la colonne (ouest ou est) du comptage des jetons
 
-		while(ligCpt >= 0 && ligCpt < this.getPlateau().getNbLignes() && colCpt >= 0 && colCpt < this.getPlateau().getNbColonnes() 
+		while(ligCpt >= 0 && ligCpt < this.getPlateau().getNbLignes() 
+				&& colCpt >= 0 && colCpt < this.getPlateau().getNbColonnes() 
 				&& this.getPlateau().getTabCases()[ligCpt][colCpt] == this.getPlateau().getTabCases()[lig][col] )
 		{
 			ligCpt += ligDir; 
 			colCpt += colDir;
-
 			cpt++;
-
 		}
 
 		return cpt;
