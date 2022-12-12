@@ -2,6 +2,7 @@ package appli;
 import jeu.IJeu;
 import jeu.Joueur;
 import jeuxPions.Othello;
+import swing.JeuGUI;
 import utileJeux.Couleurs;
 
 public class Appli {
@@ -12,6 +13,6 @@ public class Appli {
 		IJeu othello = new Othello(j1, j2);
 		othello.jouer();
 		
-		
+		new JeuGUI();
 	}
 }

@@ -15,6 +15,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import jeu.IJeu;
+import jeu.Joueur;
+import jeuxPions.Othello;
+import utileJeux.Couleurs;
+
 import java.awt.BorderLayout;
 
 public class OthelloFrame {
@@ -56,15 +61,30 @@ public class OthelloFrame {
 		plateauOthello.setLayout(new GridLayout (8, 8));
         for (int i = 1; i <= 8; i++) {
             for (int j = 1; j <= 8; j++) {
-                JButton b = new JButton();
-                b.setBackground(Color.decode("#FFEFED"));
-                plateauOthello.add(b);
+                
+                if ((i == 4 && j == 4) || (i == 5 && j == 5)) {
+        	        JButton jCaseNoir = new JButton();
+        	        jCaseNoir.setBackground(Color.decode("#000000"));
+        	        jCaseNoir.setOpaque(true);
+        	        plateauOthello.add(jCaseNoir);
+                } else if (i == 5 && j == 4) {
+                	JButton jCaseBlanc = new JButton();
+                	jCaseBlanc.setBackground(Color.decode("#ffffff"));
+                	jCaseBlanc.setOpaque(true);
+                	plateauOthello.add(jCaseBlanc);
+                } else {
+                	JButton jCase = new JButton();
+                    jCase.setBackground(Color.decode("#006400"));
+                    jCase.setOpaque(true);
+                    plateauOthello.add(jCase);
+                }
             }
         }
         
         OthelloFrame.add(plateauOthello);
+        
 		OthelloFrame.getContentPane().add(plateauOthello, BorderLayout.CENTER);
-		OthelloFrame.setBounds(100, 100, 600, 700);
+		OthelloFrame.setBounds(100, 100, 650, 700);
 		OthelloFrame.setLocationRelativeTo(null);
 		OthelloFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
