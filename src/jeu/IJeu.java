@@ -1,3 +1,4 @@
+package jeu;
 
 public interface IJeu {
 	void initialisationJeu();

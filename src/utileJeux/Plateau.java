@@ -1,4 +1,5 @@
-
+package utileJeux;
+import pions.Pion;
 
 public class Plateau {
 	private Pion[][] cases;

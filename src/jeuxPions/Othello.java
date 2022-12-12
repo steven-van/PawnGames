@@ -1,9 +1,19 @@
+package jeuxPions;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
+
+import jeu.Joueur;
+import pions.Pion;
+import pions.PionAPoser;
+import pions.PionDeuxCouleurs;
+import utileJeux.Coord;
+import utileJeux.Couleurs;
+import utileJeux.Directions;
+import utileJeux.Plateau;
 
 public class Othello extends Jeu2JoueursAPion {
 	

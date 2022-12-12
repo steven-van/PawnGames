@@ -1,3 +1,6 @@
+package pions;
+
+import utileJeux.Couleurs;
 
 public abstract class Pion {
 	private Couleurs couleur;

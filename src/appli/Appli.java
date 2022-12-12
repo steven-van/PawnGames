@@ -1,3 +1,8 @@
+package appli;
+import jeu.IJeu;
+import jeu.Joueur;
+import jeuxPions.Othello;
+import utileJeux.Couleurs;
 
 public class Appli {
 	

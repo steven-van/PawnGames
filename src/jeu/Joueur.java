@@ -1,3 +1,5 @@
+package jeu;
+import utileJeux.Couleurs;
 
 public class Joueur {
 	private Couleurs couleur;

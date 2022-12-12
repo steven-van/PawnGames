@@ -1,3 +1,5 @@
+package pions;
+import utileJeux.Couleurs;
 
 public class PionAPoser extends Pion {
 	String symbole;

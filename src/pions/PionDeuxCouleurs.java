@@ -1,3 +1,5 @@
+package pions;
+import utileJeux.Couleurs;
 
 public class PionDeuxCouleurs extends Pion {
 	private Couleurs couleur1;

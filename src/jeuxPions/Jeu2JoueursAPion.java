@@ -1,3 +1,8 @@
+package jeuxPions;
+import jeu.IJeu;
+import jeu.Joueur;
+import utileJeux.Coord;
+import utileJeux.Plateau;
 
 public abstract class Jeu2JoueursAPion implements IJeu {
 	private Plateau plateau;

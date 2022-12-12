@@ -1,3 +1,4 @@
+package utileJeux;
 
 public enum Couleurs {
 	BLANC,

@@ -1,4 +1,11 @@
+package jeuxPions;
 import java.util.Scanner;
+
+import jeu.Joueur;
+import pions.Pion;
+import pions.PionUneCouleur;
+import utileJeux.Coord;
+import utileJeux.Plateau;
 
 public class Puissance4 extends Jeu2JoueursAPion {
 	private int nbPionsJ1;

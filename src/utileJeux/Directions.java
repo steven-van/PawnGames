@@ -1,3 +1,4 @@
+package utileJeux;
 
 public enum Directions {
 	NORD(0, -1), 
@@ -17,11 +18,11 @@ public enum Directions {
 		this.y = y;
 	}
 	
-	int getX() {
+	public int getX() {
 		return this.x;
 	}
 	
-	int getY() {
+	public int getY() {
 		return this.y;
 	}
 	

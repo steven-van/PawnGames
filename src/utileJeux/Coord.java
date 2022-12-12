@@ -1,3 +1,4 @@
+package utileJeux;
 
 public class Coord {
 	private int x;
