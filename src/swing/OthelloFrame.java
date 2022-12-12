@@ -14,6 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.BorderLayout;
 
 public class OthelloFrame {
@@ -52,7 +53,7 @@ public class OthelloFrame {
 		OthelloFrame.getContentPane().setBackground(new Color(255, 250, 250));
 		
 		JPanel plateauOthello = new JPanel();
-		plateauOthello.setLayout(new GridLayout (10, 10));
+		plateauOthello.setLayout(new GridLayout (8, 8));
         for (int i = 1; i <= 8; i++) {
             for (int j = 1; j <= 8; j++) {
                 JButton b = new JButton();
