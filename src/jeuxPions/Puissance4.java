@@ -37,8 +37,7 @@ public class Puissance4 extends Jeu2JoueursAPion {
 	@Override
 	public void initialisationJeu() {
 		// TODO Auto-generated method stub
-		
-
+	
 	}
 
 	@Override
@@ -46,7 +45,6 @@ public class Puissance4 extends Jeu2JoueursAPion {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 
 	@Override
 	public String saisie() {
@@ -66,19 +64,28 @@ public class Puissance4 extends Jeu2JoueursAPion {
 	@Override
 	public void jouer() {
 		int col = Integer.parseInt(saisie());
-		for(int i = 0; i < super.getPlateau().getNbLignes(); i++) {
-			if(super.getPlateau().getTabCases()[i][col] == null) {
-				Coord c = new Coord(col, i-1);
-				if(peutJouer(c)) {
-					Pion p = new PionUneCouleur(super.getJoueurCourant().getCouleur());
-					super.getPlateau().poser(p, c);
-				}
-				
-			} 
-		}
-		System.out.println("La colonne est déja remplie");
+		int cptLignes = super.getPlateau().getNbLignes() - 1;
 		
-
+		if(super.getPlateau().getTabCases()[0][col] != null) {
+			System.out.println("La colonne est déjà remplie");
+			return;
+		}
+		
+		while(super.getPlateau().getTabCases()[cptLignes][col] != null && cptLignes >= 0) {
+			cptLignes--;
+		}
+		
+		Coord c = new Coord(col, cptLignes);
+		if(peutJouer(c)) {
+			Pion p = new PionUneCouleur(super.getJoueurCourant().getCouleur());
+			super.getPlateau().poser(p, c);
+			if(super.getJoueurCourant() == super.getJoueur1()) {
+				this.nbPionsJ1--;
+			} else {
+				this.nbPionsJ2--;
+			}
+		}
+	
 	}
 
 	@Override
@@ -102,8 +109,61 @@ public class Puissance4 extends Jeu2JoueursAPion {
 
 	@Override
 	public boolean isFinDePartie() {
-		// TODO Auto-generated method stub
+		if(super.getPlateau().isFull() || isVainqueur(super.getJoueur1()) || isVainqueur(super.getJoueur2())) {
+			return true;
+		} else {
+			return false;
+		}
+	
+	}
+	
+	public boolean estGagnant()
+	{
+		int ligMax = super.getPlateau().getNbLignes();
+		int colMax = super.getPlateau().getNbColonnes(); 
+
+		for(int indiceLig=0; indiceLig<ligMax; indiceLig++)
+			{
+				for(int indiceCol=0; indiceCol<colMax; indiceCol++)
+				{
+					if (this.getPlateau().getTabCases()[indiceLig][indiceCol] != null) 
+					{
+						if ( indiceCol<=colMax 	&& compterJeton(indiceLig, indiceCol, 1, 1) == 4
+					 				// diagonale : vers le bas et à droite 
+							|| indiceCol<=colMax 	&& compterJeton(indiceLig, indiceCol, -1, 1) == 4
+									// vers le haut et à droite
+							|| indiceLig<=ligMax  	&& compterJeton(indiceLig, indiceCol, 0, 1) == 4
+									// horizontal vers la droite
+							|| indiceLig<= ligMax	&& compterJeton(indiceLig, indiceCol, 1, 0) == 4
+								// vertical du haut vers le bas
+							)
+						{
+							return true;
+						}
+					}
+				}
+			}
+
 		return false;
+	}
+	
+	private int compterJeton(int lig, int col, int ligDir, int colDir)
+	{
+		int cpt 	=	0; 		// compte le nombre de jeton aligné
+		int ligCpt 	=	lig;	// s'occupe de la direction de la ligne (nord ou sud) du comptage des jetons
+		int colCpt 	=	col; 	// s'occupe de la direction la colonne (ouest ou est) du comptage des jetons
+
+		while(ligCpt >= 0 && ligCpt < this.getPlateau().getNbLignes() && colCpt >= 0 && colCpt < this.getPlateau().getNbColonnes() 
+				&& this.getPlateau().getTabCases()[ligCpt][colCpt] == this.getPlateau().getTabCases()[lig][col] )
+		{
+			ligCpt += ligDir; 
+			colCpt += colDir;
+
+			cpt++;
+
+		}
+
+		return cpt;
 	}
 
 }
