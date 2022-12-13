@@ -1,6 +1,5 @@
 package jeuxPions;
 import java.util.HashMap;
-import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -61,7 +60,7 @@ public class Othello extends Jeu2JoueursAPion {
 	
 	@Override
 	public boolean isFinDePartie() {
-		return super.getPlateau().isFull() || personnePeutJouer;
+		return super.getPlateau().isFull() || super.getJoueurCourant().getPts()<=0  || super.getJoueurAdverse().getPts()<=0 || this.personnePeutJouer;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -77,7 +76,7 @@ public class Othello extends Jeu2JoueursAPion {
 					
 					Coord[] pionsAttaquablesTmp = new Coord[COTE*COTE];
 					int nbPionsAttaquablesTmp = 0;
-					boolean attaque = false;
+					boolean attaque = false, pionNull=false;
 					
 					// pour chaque direction
 					for (Directions d : Directions.values()){
@@ -124,6 +123,8 @@ public class Othello extends Jeu2JoueursAPion {
 											}
 										}
 									}
+								} else {
+									pionNull=true;
 								}
 							}
 						} while((caseTmp != null) && (!attaque));
@@ -256,12 +257,17 @@ public class Othello extends Jeu2JoueursAPion {
 	@Override
 	public void jouer() {
 		boolean jPeutJouer=true;
+		int tour=0;
 		do {
-			System.out.println("C'est aux "+super.getJoueurCourant().getCouleur()+"S de jouer (Pts : " + +super.getJoueurCourant().getPts() + ")\n");
+			tour++;
+			System.out.println("C'est aux "+super.getJoueurCourant().getCouleur()+"S de jouer (Pts : " + super.getJoueurCourant().getPts() + ") contre les "+super.getJoueurAdverse().getCouleur()+"S de jouer (Pts : " + super.getJoueurAdverse().getPts() + ")\n");
+			
+			System.out.println("chargement en cours...");
 			
 			if(searchCoupsPossibles()) {
 				
 				poserNullCoupsPossibles();
+				
 				System.out.println(this.getPlateau());
 				System.out.println("Coups possibles (colonne;ligne): ");
 				System.out.println(afficherCoupsPossibles());
@@ -285,7 +291,8 @@ public class Othello extends Jeu2JoueursAPion {
 				            if((entry.getKey().getX() == coup.getX()) && (entry.getKey().getY() == coup.getY())) {
 				            	
 				            	// maj des points
-				            	super.getJoueurCourant().incPts((int)this.nbPionsAttaquables.get(entry.getKey()));
+				            	super.getJoueurCourant().incPts((int)this.nbPionsAttaquables.get(entry.getKey())+1);
+				            	super.getJoueurAdverse().incPts(-((int)this.nbPionsAttaquables.get(entry.getKey())));
 				            	
 				            	// attaque
 				            	for(int i=0; i < (int) this.nbPionsAttaquables.get(entry.getKey()); i++) {
@@ -315,6 +322,7 @@ public class Othello extends Jeu2JoueursAPion {
 				if(!jPeutJouer) { personnePeutJouer = true; break;
 				} else { jPeutJouer = false;}
 			}
+			if(tour%2==0)jPeutJouer=true;
 
 			System.out.println("-------------------------------------");
 		} while(!this.isFinDePartie());
@@ -324,10 +332,11 @@ public class Othello extends Jeu2JoueursAPion {
 						super.getJoueur1() : 
 							((isVainqueur(super.getJoueur2()) ? 
 									super.getJoueur2():null));
+		Joueur perdant = (vainqueur == super.getJoueur1())?super.getJoueur2():super.getJoueur1();
 		if(vainqueur == null) {
 			System.out.println("égalité avec " + super.getJoueur1().getPts() + " pts chacun.");
 		} else {
-			System.out.println(vainqueur + " a gagné avec "+vainqueur.getPts()+" pts.");
+			System.out.println(vainqueur + " a gagné avec "+vainqueur.getPts()+" pts contre les "+perdant.getCouleur()+" avec "+perdant.getPts()+" pts.");
 		}
 
 	}

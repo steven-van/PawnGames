@@ -27,6 +27,6 @@ public class Joueur {
 	}
 	
 	public String toString() {
-		return "Le joueur est dans le camp " + couleur;
+		return couleur + "";
 	}
 }
