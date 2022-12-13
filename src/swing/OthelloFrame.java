@@ -17,13 +17,14 @@ import javax.swing.border.EmptyBorder;
 
 import jeu.IJeu;
 import jeu.Joueur;
-import jeuxPions.Othello;
-import utileJeux.Couleurs;
+import jeuxPions.*;
+import utileJeux.*;
 
 import java.awt.BorderLayout;
 
 public class OthelloFrame {
-
+	private Jeu2JoueursAPion jeu;
+	
 	JFrame OthelloFrame;
 
 	/**
@@ -33,7 +34,10 @@ public class OthelloFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					OthelloFrame window = new OthelloFrame();
+					Joueur j1 = new Joueur(Couleurs.NOIR);
+					Joueur j2 = new Joueur(Couleurs.BLANC);
+					IJeu othello = new Othello(j1, j2);
+					OthelloFrame window = new OthelloFrame(othello);
 					window.OthelloFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +49,8 @@ public class OthelloFrame {
 	/**
 	 * Create the application.
 	 */
-	public OthelloFrame() {
+	public OthelloFrame(IJeu jeu) {
+		this.jeu = (Jeu2JoueursAPion) jeu;
 		initialize();
 	}
 
@@ -59,25 +64,34 @@ public class OthelloFrame {
 		
 		JPanel plateauOthello = new JPanel();
 		plateauOthello.setLayout(new GridLayout (8, 8));
-        for (int i = 1; i <= 8; i++) {
-            for (int j = 1; j <= 8; j++) {
+        for (int i = 1; i <= this.jeu.getPlateau().getNbLignes(); i++) {
+            for (int j = 1; j <= this.jeu.getPlateau().getNbColonnes(); j++) {
                 
-                if ((i == 4 && j == 4) || (i == 5 && j == 5)) {
-        	        JButton jCaseNoir = new JButton();
-        	        jCaseNoir.setBackground(Color.decode("#000000"));
-        	        jCaseNoir.setOpaque(true);
-        	        plateauOthello.add(jCaseNoir);
-                } else if (i == 5 && j == 4) {
+            	if(this.jeu.getPlateau().getCase(new Coord(i, j)) != null) {
+                	
+            		if(this.jeu.getPlateau().getCase(new Coord(i, j)).getCouleur() == Couleurs.NOIR) {
+            	        JButton jCaseNoir = new JButton();
+            	        jCaseNoir.setBackground(Color.decode("#000000"));
+            	        jCaseNoir.setOpaque(true);
+            	        plateauOthello.add(jCaseNoir);
+                    } else if (this.jeu.getPlateau().getCase(new Coord(i, j)).getCouleur() == Couleurs.BLANC)  {
+                    	JButton jCaseBlanc = new JButton();
+                    	jCaseBlanc.setBackground(Color.decode("#ffffff"));
+                    	jCaseBlanc.setOpaque(true);
+                    	plateauOthello.add(jCaseBlanc);
+                    } else {
+                     	JButton jCase = new JButton();
+                        jCase.setBackground(Color.decode("#DF5746"));
+                        jCase.setOpaque(true);
+                        plateauOthello.add(jCase);
+                    }
+                }
+            	else {
                 	JButton jCaseBlanc = new JButton();
-                	jCaseBlanc.setBackground(Color.decode("#ffffff"));
+                	jCaseBlanc.setBackground(Color.decode("#006400"));
                 	jCaseBlanc.setOpaque(true);
                 	plateauOthello.add(jCaseBlanc);
-                } else {
-                	JButton jCase = new JButton();
-                    jCase.setBackground(Color.decode("#006400"));
-                    jCase.setOpaque(true);
-                    plateauOthello.add(jCase);
-                }
+                } 
             }
         }
         
