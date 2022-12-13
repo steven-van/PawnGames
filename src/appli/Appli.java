@@ -12,7 +12,5 @@ public class Appli {
 		Joueur j2 = new Joueur(Couleurs.BLANC);
 		IJeu othello = new Othello(j1, j2);
 		othello.jouer();
-		
-		new JeuGUI();
 	}
 }
