@@ -5,76 +5,95 @@ import jeu.Joueur;
 import pions.Pion;
 import pions.PionUneCouleur;
 import utileJeux.Coord;
+import utileJeux.Directions;
 import utileJeux.Plateau;
 
 public class Puissance4 extends Jeu2JoueursAPion {
 	private static final int NB_LIGNE_PAR_DEFAUT = 6;
 	private static final int NB_COLONNE_PAR_DEFAUT 	= 7;
-	private int nbPionsJ1;
-	private int nbPionsJ2;
 	
 	public Puissance4(Joueur joueur1, Joueur joueur2) {
 		super(new Plateau(NB_LIGNE_PAR_DEFAUT,NB_COLONNE_PAR_DEFAUT), joueur1, joueur2);
-		this.nbPionsJ1 = 21;
-		this.nbPionsJ2 = 21;
 		super.setJoueurCourant(getPremierJoueur());
-	}
-	
-	public int getNbPionsJ1() {
-		return this.nbPionsJ1;
-	}
-	
-	public int getNbPionsJ2() {
-		return this.nbPionsJ2;
-	}
-
-	public int setNbPionsJ1() {
-		return this.nbPionsJ1;
-	}
-	
-	public int setNbPionsJ2() {
-		return this.nbPionsJ2;
 	}
 	
 	@Override
 	public void initialisationJeu() {
 		// TODO Auto-generated method stub
-	
 	}
 
 	@Override
 	public boolean isVainqueur(Joueur j) {
 		int ligMax = super.getPlateau().getNbLignes();
 		int colMax = super.getPlateau().getNbColonnes(); 
-
-		for(int indiceLig=0; indiceLig<ligMax; indiceLig++)
-			{
-				for(int indiceCol=0; indiceCol<colMax; indiceCol++)
-				{
-					if (this.getPlateau().getTabCases()[indiceLig][indiceCol] != null) 
-					{
-						if ( indiceCol<=colMax 	&& compterJeton(indiceLig, indiceCol, 1, 1) == 4
-					 			// diagonale : vers le bas et à droite 
-							|| indiceCol<=colMax && compterJeton(indiceLig, indiceCol, -1, 1) == 4
-								// vers le haut et à droite
-							|| indiceLig<=ligMax  && compterJeton(indiceLig, indiceCol, 0, 1) == 4
-								// horizontal vers la droite
-							|| indiceLig<= ligMax && compterJeton(indiceLig, indiceCol, 1, 0) == 4
-								// vertical du haut vers le bas
-							)
-						{
-							return true;
+		System.out.println("Chargement en cours...");
+		
+		for(int indiceLig=1; indiceLig<=ligMax; indiceLig++) {
+			for(int indiceCol=1; indiceCol<=colMax; indiceCol++) {
+				
+				/*if (this.getPlateau().getTabCases()[indiceLig][indiceCol] != null) {
+					if ( indiceCol<=colMax 	&& compterJeton(indiceLig, indiceCol, 1, 1) == 4
+				 			// diagonale : vers le bas et à droite 
+						|| indiceCol<=colMax && compterJeton(indiceLig, indiceCol, -1, 1) == 4
+							// vers le haut et à droite
+						|| indiceLig<=ligMax  && compterJeton(indiceLig, indiceCol, 0, 1) == 4
+							// horizontal vers la droite
+						|| indiceLig<= ligMax && compterJeton(indiceLig, indiceCol, 1, 0) == 4
+							// vertical du haut vers le bas
+						) {
+						System.out.println("Le joueur" + j + " a gagné");
+						return true;
+					}
+				}
+				*/
+				Coord coordTmp = new Coord(indiceCol, indiceLig);
+				if(super.getPlateau().getCase(coordTmp) != null) {
+					// pour chaque direction
+					for (Directions d : Directions.values()){
+						Pion caseTmp;
+						int nbPions = 1;
+						int i=0;
+						// case associée à la direction
+						int xDir = d.getX();
+						int yDir = d.getY();
+						
+						if(super.getPlateau().isValidCoord(coordTmp)) {
+							
+							caseTmp = super.getPlateau().getCase(coordTmp);
+							int currentX, currentY;
+							
+							while((caseTmp != null) && (caseTmp.getCouleur() == super.getJoueurCourant().getCouleur())){
+								
+								i++; // le nb de pas dans une direction
+								currentX = indiceCol + xDir*i;
+								currentY = indiceLig + yDir*i;
+								coordTmp = new Coord(currentX, currentY); // le nouveau pas
+						
+								if(super.getPlateau().isValidCoord(coordTmp)) {
+									
+									caseTmp = super.getPlateau().getCase(coordTmp); // la case correspondante
+									
+									if((caseTmp != null) && (caseTmp.getCouleur() == super.getJoueurCourant().getCouleur())){ // par lui-même
+										nbPions++;
+										if(nbPions == 4) {
+											System.out.println("Le joueur " + j + " a gagné");
+											return true;
+										}
+									}
+								}
+							}
 						}
 					}
 				}
 			}
-
+		}
 		return false;
 	}
 
 	@Override
 	public String saisie() {
 		Scanner scanner = new Scanner(System.in);
+		System.out.println("C'est au tour du joueur " + super.getJoueurCourant());
 		System.out.println("Veuillez entrer la colonne (1 à 7) du pion que vous voulez placer");
 		System.out.print("Votre choix : ");
 		int col = scanner.nextInt();
@@ -83,34 +102,36 @@ public class Puissance4 extends Jeu2JoueursAPion {
 			System.out.print("Votre choix : ");
 			col = scanner.nextInt();
 		}
-		scanner.close();
+		//scanner.close();
 		return Integer.toString(col);
 	}
 
 	@Override
 	public void jouer() {
-		int col = Integer.parseInt(saisie());
-		int cptLignes = super.getPlateau().getNbLignes() - 1;
-		
-		if(super.getPlateau().getTabCases()[0][col] != null) {
-			System.out.println("La colonne est déjà remplie");
-			return;
-		}
-		
-		while(super.getPlateau().getTabCases()[cptLignes][col] != null && cptLignes >= 0) {
-			cptLignes--;
-		}
-		
-		Coord c = new Coord(col, cptLignes);
-		if(peutJouer(c)) {
-			Pion p = new PionUneCouleur(super.getJoueurCourant().getCouleur());
-			super.getPlateau().poser(p, c);
-			if(super.getJoueurCourant() == super.getJoueur1()) {
-				this.nbPionsJ1--;
-			} else {
-				this.nbPionsJ2--;
+		System.out.println(super.getPlateau());
+		while(!isFinDePartie()) {
+			int col = Integer.parseInt(saisie());
+			int cptLignes = super.getPlateau().getNbLignes();
+			
+			while(super.getPlateau().getCase(new Coord(col, 1)) != null) {
+				System.out.println("La colonne est remplie");
+				col = Integer.parseInt(saisie());
+			}
+			
+			while(cptLignes >= 0 && super.getPlateau().getCase(new Coord(col, cptLignes)) != null) {
+				cptLignes--;
+			}
+			
+			Coord c = new Coord(col, cptLignes);
+			if(peutJouer(c)) {
+				Pion p = new PionUneCouleur(super.getJoueurCourant().getCouleur());
+				super.getPlateau().poser(p, c);
+				super.setJoueurCourant(super.getJoueurAdverse());
+				System.out.println(super.getPlateau());
 			}
 		}
+		
+
 	
 	}
 
@@ -126,6 +147,8 @@ public class Puissance4 extends Jeu2JoueursAPion {
 	@Override
 	public Joueur getPremierJoueur() {
 		int min = 1;
+		
+		
 		int max = 2;
 		int numJoueur = (min + (int)(Math.random() * (max - min) + 1));
 		Joueur j = numJoueur == 1 ? super.getJoueur1() : super.getJoueur2();
@@ -134,9 +157,7 @@ public class Puissance4 extends Jeu2JoueursAPion {
 
 	@Override
 	public boolean isFinDePartie() {
-		if(super.getPlateau().isFull() 
-				|| isVainqueur(super.getJoueur1()) 
-				|| isVainqueur(super.getJoueur2())) {
+		if(isVainqueur(super.getJoueurCourant()) || super.getPlateau().isFull()) {
 			return true;
 		} else {
 			return false;
@@ -146,7 +167,7 @@ public class Puissance4 extends Jeu2JoueursAPion {
 	
 
 	
-	private int compterJeton(int lig, int col, int ligDir, int colDir)
+	/*private int compterJeton(int lig, int col, int ligDir, int colDir)
 	{
 		int cpt = 0; 		// compte le nombre de jeton aligné
 		int ligCpt = lig;	// s'occupe de la direction de la ligne (nord ou sud) du comptage des jetons
@@ -154,7 +175,7 @@ public class Puissance4 extends Jeu2JoueursAPion {
 
 		while(ligCpt >= 0 && ligCpt < this.getPlateau().getNbLignes() 
 				&& colCpt >= 0 && colCpt < this.getPlateau().getNbColonnes() 
-				&& this.getPlateau().getTabCases()[ligCpt][colCpt] == this.getPlateau().getTabCases()[lig][col] )
+				&& this.getPlateau().getTabCases()[ligCpt][colCpt].getCouleur() == this.getPlateau().getTabCases()[lig][col].getCouleur() 
 		{
 			ligCpt += ligDir; 
 			colCpt += colDir;
@@ -163,5 +184,6 @@ public class Puissance4 extends Jeu2JoueursAPion {
 
 		return cpt;
 	}
+	*/
 
 }
