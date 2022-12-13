@@ -10,6 +10,8 @@ local.properties
 .loadpath
 .recommenders
 
+src/swing
+
 # External tool builders
 .externalToolBuilders/
 
