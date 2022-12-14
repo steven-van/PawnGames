@@ -61,8 +61,9 @@ public class Puissance4 extends Jeu2JoueursAPion {
 							
 							caseTmp = super.getPlateau().getCase(coordTmp);
 							int currentX, currentY;
+						
 							
-							while((caseTmp != null) && (caseTmp.getCouleur() == super.getJoueurCourant().getCouleur())){
+							while((caseTmp != null) && (caseTmp.getCouleur() == j.getCouleur())){
 								
 								i++; // le nb de pas dans une direction
 								currentX = indiceCol + xDir*i;
@@ -73,7 +74,7 @@ public class Puissance4 extends Jeu2JoueursAPion {
 									
 									caseTmp = super.getPlateau().getCase(coordTmp); // la case correspondante
 									
-									if((caseTmp != null) && (caseTmp.getCouleur() == super.getJoueurCourant().getCouleur())){ // par lui-même
+									if((caseTmp != null) && (caseTmp.getCouleur() == j.getCouleur())){ // par lui-même
 										nbPions++;
 										if(nbPions == 4) {
 											System.out.println("Le joueur " + j + " a gagné");
@@ -109,7 +110,7 @@ public class Puissance4 extends Jeu2JoueursAPion {
 	@Override
 	public void jouer() {
 		System.out.println(super.getPlateau());
-		while(!isFinDePartie()) {
+		do {
 			int col = Integer.parseInt(saisie());
 			int cptLignes = super.getPlateau().getNbLignes();
 			
@@ -126,10 +127,11 @@ public class Puissance4 extends Jeu2JoueursAPion {
 			if(peutJouer(c)) {
 				Pion p = new PionUneCouleur(super.getJoueurCourant().getCouleur());
 				super.getPlateau().poser(p, c);
-				super.setJoueurCourant(super.getJoueurAdverse());
 				System.out.println(super.getPlateau());
+				super.setJoueurCourant(super.getJoueurAdverse());
 			}
-		}
+		} while(!isFinDePartie());
+
 		
 
 	
@@ -147,8 +149,6 @@ public class Puissance4 extends Jeu2JoueursAPion {
 	@Override
 	public Joueur getPremierJoueur() {
 		int min = 1;
-		
-		
 		int max = 2;
 		int numJoueur = (min + (int)(Math.random() * (max - min) + 1));
 		Joueur j = numJoueur == 1 ? super.getJoueur1() : super.getJoueur2();
