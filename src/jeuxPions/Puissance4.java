@@ -157,7 +157,7 @@ public class Puissance4 extends Jeu2JoueursAPion {
 
 	@Override
 	public boolean isFinDePartie() {
-		if(isVainqueur(super.getJoueurCourant()) || super.getPlateau().isFull()) {
+		if(isVainqueur(super.getJoueurAdverse()) || super.getPlateau().isFull()) {
 			return true;
 		} else {
 			return false;
