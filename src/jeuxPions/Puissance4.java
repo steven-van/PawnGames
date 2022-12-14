@@ -148,7 +148,7 @@ public class Puissance4 extends Jeu2JoueursAPion {
 
 	@Override
 	public Joueur getPremierJoueur() {
-		int min = 1;
+		int min = 0;
 		int max = 2;
 		int numJoueur = (min + (int)(Math.random() * (max - min) + 1));
 		Joueur j = numJoueur == 1 ? super.getJoueur1() : super.getJoueur2();
