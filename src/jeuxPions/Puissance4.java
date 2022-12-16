@@ -19,7 +19,6 @@ public class Puissance4 extends Jeu2JoueursAPion {
 	
 	@Override
 	public void initialisationJeu() {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -50,40 +49,42 @@ public class Puissance4 extends Jeu2JoueursAPion {
 				if(super.getPlateau().getCase(coordTmp) != null) {
 					// pour chaque direction
 					for (Directions d : Directions.values()){
+						
 						Pion caseTmp;
 						int nbPions = 1;
-						int i=0;
 						// case associée à la direction
 						int xDir = d.getX();
 						int yDir = d.getY();
+						int currentX, currentY;
+						boolean conditionIncPions = false;
 						
-						if(super.getPlateau().isValidCoord(coordTmp)) {
+						do {
+							currentX = indiceCol + xDir*nbPions;
+							currentY = indiceLig + yDir*nbPions;
+							coordTmp = new Coord(currentX, currentY); // le nouveau pas
 							
-							caseTmp = super.getPlateau().getCase(coordTmp);
-							int currentX, currentY;
-						
-							
-							while((caseTmp != null) && (caseTmp.getCouleur() == j.getCouleur())){
+							if(super.getPlateau().isValidCoord(coordTmp)) {
 								
-								i++; // le nb de pas dans une direction
-								currentX = indiceCol + xDir*i;
-								currentY = indiceLig + yDir*i;
-								coordTmp = new Coord(currentX, currentY); // le nouveau pas
-						
-								if(super.getPlateau().isValidCoord(coordTmp)) {
+								caseTmp = super.getPlateau().getCase(coordTmp);
+				
+								conditionIncPions = (caseTmp != null) && (caseTmp.getCouleur() == j.getCouleur());
+								
+								if(conditionIncPions){ // par lui-même
+									nbPions++; // le nb de ses pions dans une direction
 									
-									caseTmp = super.getPlateau().getCase(coordTmp); // la case correspondante
-									
-									if((caseTmp != null) && (caseTmp.getCouleur() == j.getCouleur())){ // par lui-même
-										nbPions++;
-										if(nbPions == 4) {
-											System.out.println("Le joueur " + j + " a gagné");
-											return true;
-										}
+									if(nbPions == 4) {
+										System.out.println("Le joueur " + j + " a gagné");
+										return true;
 									}
 								}
+								else {
+									break;
+								}
+								
+							}else {
+								break;
 							}
-						}
+						}while(conditionIncPions);
 					}
 				}
 			}
