@@ -11,23 +11,22 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import java.awt.Label;
 import java.awt.Font;
 import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
+
+import jeu.Joueur;
+import utileJeux.Couleurs;
+
 import javax.swing.SwingConstants;
-import java.awt.Button;
 import javax.swing.JButton;
-import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
-import javax.swing.Action;
-import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
-import javax.swing.JLayeredPane;
 
 public class JeuGUI extends JFrame {
 
-	JPanel contentPane;
+	JPanel contentPanel;
+	
 
 	/**
 	 * Launch the application.
@@ -49,6 +48,9 @@ public class JeuGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public JeuGUI() {
+		Joueur j1 = new Joueur(Couleurs.NOIR);
+		Joueur j2 = new Joueur(Couleurs.BLANC);
+		
 		setTitle("PawnGames");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,7 +62,7 @@ public class JeuGUI extends JFrame {
 		 */
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(new Color(255, 235, 217));
-		menuBar.setForeground(new Color(86, 78, 71));
+		menuBar.setOpaque(true);
 		setJMenuBar(menuBar);
 		
 		JMenu menuJeu = new JMenu("Jeu");
@@ -69,7 +71,7 @@ public class JeuGUI extends JFrame {
 		JMenuItem menuItemOthello = new JMenuItem("Othello");
 		menuItemOthello.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	OthelloFrame OFrame = new OthelloFrame();
+            	OthelloFrame OFrame = new OthelloFrame(j1, j2);
 				OFrame.OthelloFrame.setVisible(true);
 				dispose();            
             }
@@ -79,8 +81,8 @@ public class JeuGUI extends JFrame {
 		JMenuItem menuItemP4 = new JMenuItem("Puissance 4");
 		menuItemP4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				P4Frame pFrame = new P4Frame();
-				pFrame.P4Frame.setVisible(true);
+				P4Frame PFrame = new P4Frame();
+				PFrame.P4Frame.setVisible(true);
 				dispose();
 			}
 		});
@@ -113,12 +115,12 @@ public class JeuGUI extends JFrame {
         });
         menuJeu.add(menuItemQuit);
 		
-		contentPane = new JPanel();
-		contentPane.setBackground(new Color(255, 250, 250));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPanel = new JPanel();
+		contentPanel.setBackground(new Color(255, 250, 250));
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		setContentPane(contentPanel);
+		contentPanel.setLayout(null);
 		
 		/**
 		 * Label
@@ -129,13 +131,13 @@ public class JeuGUI extends JFrame {
 		lblPawnGames.setForeground(new Color(117, 85, 71));
 		lblPawnGames.setFont(new Font("Monospaced", Font.PLAIN, 60));
 		lblPawnGames.setVerticalAlignment(SwingConstants.TOP);
-		contentPane.add(lblPawnGames);
+		contentPanel.add(lblPawnGames);
 		
 		JLabel lblChoix = DefaultComponentFactory.getInstance().createLabel("Choisissez votre jeu :");
 		lblChoix.setBounds(262, 120, 260, 31);
 		lblChoix.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
 		lblChoix.setVerticalAlignment(SwingConstants.BOTTOM);
-		contentPane.add(lblChoix);
+		contentPanel.add(lblChoix);
 		
 		/**
 		 * Bouton Othello
@@ -143,14 +145,15 @@ public class JeuGUI extends JFrame {
 		JButton btnOthello = new JButton("Othello");
 		btnOthello.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				OthelloFrame oFrame = new OthelloFrame();
+				OthelloFrame oFrame = new OthelloFrame(j1, j2);
 				oFrame.OthelloFrame.setVisible(true);
 				dispose();
 			}
 		});
 		btnOthello.setFont(new Font("Lucida Grande", Font.PLAIN, 30));
 		btnOthello.setBounds(76, 200, 300, 200);
-		contentPane.add(btnOthello);
+		btnOthello.setOpaque(true);
+		contentPanel.add(btnOthello);
 		
 		/**
 		 * Bouton Puissance 4
@@ -165,7 +168,8 @@ public class JeuGUI extends JFrame {
 		});
 		btnP4.setFont(new Font("Lucida Grande", Font.PLAIN, 30));
 		btnP4.setBounds(417, 200, 300, 200);
-		contentPane.add(btnP4);
+		btnP4.setOpaque(true);
+		contentPanel.add(btnP4);
 	}
 	
 }
