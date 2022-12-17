@@ -1,4 +1,5 @@
 package jeuxPions;
+
 import jeu.IJeu;
 import jeu.Joueur;
 import utileJeux.Coord;
@@ -9,27 +10,27 @@ public abstract class Jeu2JoueursAPion implements IJeu {
 	private Joueur joueur1;
 	private Joueur joueur2;
 	private Joueur joueurCourant;
-	
+
 	public Jeu2JoueursAPion(Plateau plateau, Joueur joueur1, Joueur joueur2) {
 		this.plateau = plateau;
 		this.joueur1 = joueur1;
 		this.joueur2 = joueur2;
 	}
-	
+
 	@Override
 	public Joueur getJoueurCourant() {
 		return this.joueurCourant;
 	}
-	
+
 	public Joueur getJoueurAdverse() {
-		return (this.joueurCourant.getCouleur() == joueur1.getCouleur())? joueur2 : joueur1;
+		return (this.joueurCourant.getCouleur() == joueur1.getCouleur()) ? joueur2 : joueur1;
 	}
-	
+
 	@Override
 	public void setJoueurCourant(Joueur j) {
 		this.joueurCourant = j;
 	}
-	
+
 	@Override
 	public abstract void initialisationJeu();
 
@@ -40,7 +41,7 @@ public abstract class Jeu2JoueursAPion implements IJeu {
 	public abstract boolean isVainqueur(Joueur j);
 
 	public abstract boolean peutJouer(Coord c);
-	
+
 	@Override
 	public abstract String saisie();
 
@@ -49,7 +50,7 @@ public abstract class Jeu2JoueursAPion implements IJeu {
 
 	@Override
 	public abstract boolean isFinDePartie();
-	
+
 	public Joueur getJoueur1() {
 		return joueur1;
 	}
