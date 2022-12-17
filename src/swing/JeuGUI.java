@@ -18,11 +18,9 @@ import com.jgoodies.forms.factories.DefaultComponentFactory;
 import jeu.Joueur;
 import utileJeux.Couleurs;
 
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JLayeredPane;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
 
 public class JeuGUI extends JFrame {
 
@@ -65,28 +63,6 @@ public class JeuGUI extends JFrame {
 		
 		JMenu menuJeu = new JMenu("Jeu");
 		menuBar.add(menuJeu);
-		
-		JMenuItem menuItemOthello = new JMenuItem("Othello");
-		menuItemOthello.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-        		Joueur j1 = new Joueur(Couleurs.NOIR);
-        		Joueur j2 = new Joueur(Couleurs.BLANC);
-            	OthelloFrame OFrame = new OthelloFrame(j1, j2);
-				OFrame.OthelloFrame.setVisible(true);
-				dispose();            
-            }
-        });
-		menuJeu.add(menuItemOthello);
-		
-		JMenuItem menuItemP4 = new JMenuItem("Puissance 4");
-		menuItemP4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				P4Frame PFrame = new P4Frame();
-				PFrame.P4Frame.setVisible(true);
-				dispose();
-			}
-		});
-		menuJeu.add(menuItemP4);
 		
 		JMenu menuInfos = new JMenu("?");
 		menuBar.add(menuInfos);
@@ -163,7 +139,9 @@ public class JeuGUI extends JFrame {
 		JButton btnP4 = new JButton("Puissance 4");
 		btnP4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				P4Frame pFrame = new P4Frame();
+				Joueur j1 = new Joueur(Couleurs.JAUNE);
+				Joueur j2 = new Joueur(Couleurs.ROUGE);
+				P4Frame pFrame = new P4Frame(j1, j2);
 				pFrame.P4Frame.setVisible(true);
 				dispose();
 			}

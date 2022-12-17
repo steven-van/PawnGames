@@ -1,38 +1,20 @@
 package swing;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Timer;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
 
 import jeu.IJeu;
 import jeu.Joueur;
 import jeuxPions.*;
 import utileJeux.*;
 
-import java.awt.BorderLayout;
-import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
-import java.awt.Font;
-import javax.swing.SwingConstants;
 
 public class OthelloFrame {
 	
-	private Jeu2JoueursAPion jeu;
-	
 	JFrame OthelloFrame;
+	private Jeu2JoueursAPion jeu;
 	
 	/**
 	 * Create the application.
@@ -50,7 +32,7 @@ public class OthelloFrame {
 	public static class Boutons {
     	public static Component getBoutonBlanc() {
     		JButton jCaseBlanc = new JButton();
-        	jCaseBlanc.setBackground(Color.decode("#ffffff"));
+        	jCaseBlanc.setBackground(Color.decode("#FFFFFF"));
         	jCaseBlanc.setOpaque(true);
         	return jCaseBlanc;
     	}
@@ -64,14 +46,14 @@ public class OthelloFrame {
     	
     	public static Component getBoutonCase() {
     		JButton jCase = new JButton();
-            jCase.setBackground(Color.decode("#DF5746"));
+            jCase.setBackground(Color.decode("#006400"));
             jCase.setOpaque(true);
         	return jCase;
     	}
     	
     	public static Component getBoutonCaseChoix() {
     		JButton jCaseChoix = new JButton();
-        	jCaseChoix.setBackground(Color.decode("#006400"));
+        	jCaseChoix.setBackground(Color.decode("#DF5746"));
         	jCaseChoix.setOpaque(true);
         	return jCaseChoix;
     	}
@@ -94,11 +76,10 @@ public class OthelloFrame {
                     	plateauOthello.add(Boutons.getBoutonBlanc());
                     	
                     } else {
-                     	JButton jCase = new JButton();
-                     	plateauOthello.add(Boutons.getBoutonCase());
+                     	plateauOthello.add(Boutons.getBoutonCaseChoix());
                     }
                 } else {
-                 	plateauOthello.add(Boutons.getBoutonCaseChoix());
+                 	plateauOthello.add(Boutons.getBoutonCase());
 
                 	/*jCaseChoix.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
@@ -119,15 +100,14 @@ public class OthelloFrame {
 		OthelloFrame = new JFrame();
 		OthelloFrame.setTitle("Othello");
 		OthelloFrame.getContentPane().setBackground(new Color(255, 250, 250));
-		
-		JPanel plateauOthello = new JPanel();
-		this.afficherPlateau(plateauOthello);
-        
-        OthelloFrame.getContentPane().add(plateauOthello);
-		OthelloFrame.getContentPane().add(plateauOthello, BorderLayout.CENTER);
 		OthelloFrame.setBounds(100, 100, 650, 700);
 		OthelloFrame.setLocationRelativeTo(null);
 		OthelloFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JPanel plateauOthello = new JPanel();
+		this.afficherPlateau(plateauOthello);
+        OthelloFrame.getContentPane().add(plateauOthello);
+		OthelloFrame.getContentPane().add(plateauOthello, BorderLayout.CENTER);
         
         /**
     	 * Zone de texte : Dialogue affichant les instructions.
