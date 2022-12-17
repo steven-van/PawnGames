@@ -22,6 +22,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JLayeredPane;
 
 public class JeuGUI extends JFrame {
 
@@ -47,10 +48,7 @@ public class JeuGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public JeuGUI() {
-		Joueur j1 = new Joueur(Couleurs.NOIR);
-		Joueur j2 = new Joueur(Couleurs.BLANC);
-		
+	public JeuGUI() {	
 		setTitle("PawnGames");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,6 +69,8 @@ public class JeuGUI extends JFrame {
 		JMenuItem menuItemOthello = new JMenuItem("Othello");
 		menuItemOthello.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+        		Joueur j1 = new Joueur(Couleurs.NOIR);
+        		Joueur j2 = new Joueur(Couleurs.BLANC);
             	OthelloFrame OFrame = new OthelloFrame(j1, j2);
 				OFrame.OthelloFrame.setVisible(true);
 				dispose();            
@@ -145,6 +145,8 @@ public class JeuGUI extends JFrame {
 		JButton btnOthello = new JButton("Othello");
 		btnOthello.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Joueur j1 = new Joueur(Couleurs.NOIR);
+				Joueur j2 = new Joueur(Couleurs.BLANC);
 				OthelloFrame oFrame = new OthelloFrame(j1, j2);
 				oFrame.OthelloFrame.setVisible(true);
 				dispose();

@@ -30,7 +30,24 @@ import javax.swing.SwingConstants;
 
 public class OthelloFrame {
 	
-	public static class UtileInterface {
+	private Jeu2JoueursAPion jeu;
+	
+	JFrame OthelloFrame;
+	
+	/**
+	 * Create the application.
+	 */
+	public OthelloFrame(Joueur j1, Joueur j2) {
+		IJeu jeu = new Othello(j1, j2);
+		this.jeu = (Jeu2JoueursAPion) jeu;
+		// jeu.jouer();
+		initialize();
+	}
+	
+	/**
+	 * Boutons
+	 */
+	public static class Boutons {
     	public static Component getBoutonBlanc() {
     		JButton jCaseBlanc = new JButton();
         	jCaseBlanc.setBackground(Color.decode("#ffffff"));
@@ -44,77 +61,55 @@ public class OthelloFrame {
 	        jCaseNoir.setOpaque(true);
         	return jCaseNoir;
     	}
+    	
+    	public static Component getBoutonCase() {
+    		JButton jCase = new JButton();
+            jCase.setBackground(Color.decode("#DF5746"));
+            jCase.setOpaque(true);
+        	return jCase;
+    	}
+    	
+    	public static Component getBoutonCaseChoix() {
+    		JButton jCaseChoix = new JButton();
+        	jCaseChoix.setBackground(Color.decode("#006400"));
+        	jCaseChoix.setOpaque(true);
+        	return jCaseChoix;
+    	}
     }
-	
-	
-	
-	private Jeu2JoueursAPion jeu;
-	private Timer timer;
-	
-	JFrame OthelloFrame;
 
 	/**
-	 * Launch the application.
-	 * @return 
+	 * Generer le plateau
 	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					OthelloFrame window = new OthelloFrame(othello);
-					window.OthelloFrame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-	
 	public void afficherPlateau(JPanel plateauOthello) {
 		plateauOthello.setLayout(new GridLayout (8, 8, 10, 10));
         for (int i = 1; i <= this.jeu.getPlateau().getNbLignes(); i++) {
             for (int j = 1; j <= this.jeu.getPlateau().getNbColonnes(); j++) {
                 
-            	if(this.jeu.getPlateau().getCase(new Coord(i, j)) != null) {
-                	
-            		if(this.jeu.getPlateau().getCase(new Coord(i, j)).getCouleur() == Couleurs.NOIR) {
-            	        JButton jCaseNoir = new JButton();
-            	        jCaseNoir.setBackground(Color.decode("#000000"));
-            	        jCaseNoir.setOpaque(true);
-            	        plateauOthello.add(jCaseNoir);
+            	if (this.jeu.getPlateau().getCase(new Coord(i, j)) != null) {
+            		
+            		if (this.jeu.getPlateau().getCase(new Coord(i, j)).getCouleur() == Couleurs.NOIR) {
+                    	plateauOthello.add(Boutons.getBoutonNoir());
+
                     } else if (this.jeu.getPlateau().getCase(new Coord(i, j)).getCouleur() == Couleurs.BLANC)  {
-                    	plateauOthello.add(UtileInterface.getBoutonBlanc());
+                    	plateauOthello.add(Boutons.getBoutonBlanc());
+                    	
                     } else {
                      	JButton jCase = new JButton();
-                        jCase.setBackground(Color.decode("#DF5746"));
-                        jCase.setOpaque(true);
-                        plateauOthello.add(jCase);
+                     	plateauOthello.add(Boutons.getBoutonCase());
                     }
                 } else {
-                	JButton jCaseChoix = new JButton();
-                	jCaseChoix.setBackground(Color.decode("#006400"));
-                	jCaseChoix.setOpaque(true);
-                	plateauOthello.add(jCaseChoix);
-                	jCaseChoix.addActionListener(new ActionListener() {
+                 	plateauOthello.add(Boutons.getBoutonCaseChoix());
+
+                	/*jCaseChoix.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
                         	plateauOthello.remove(jCaseChoix);
                         	
-                        	plateauOthello.add(UtileInterface.getBoutonNoir());
+                        	plateauOthello.add(Boutons.getBoutonNoir());
                         }
-                    });
+                    });**/
                 } 
             }
         }
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public OthelloFrame(Joueur j1, Joueur j2) {
-		IJeu jeu = new Othello(j1, j2);
-		this.jeu = (Jeu2JoueursAPion) jeu;
-		// jeu.jouer();
-		initialize();
 	}
 
 	/**
