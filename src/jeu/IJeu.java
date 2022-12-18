@@ -43,4 +43,5 @@ public interface IJeu {
 	 * @return true si l'utilisateur continue la partie ; false sinon
 	 */
 	boolean jouer();
+}
 

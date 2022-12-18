@@ -16,4 +16,3 @@ public class PionUneCouleur extends Pion {
 		return super.getCouleur().toString();
 	}
 }
-+
