@@ -109,9 +109,13 @@ public class Puissance4 extends Jeu2JoueursAPion {
 	}
 
 	@Override
-	public void jouer() {
+	public boolean jouer() {
 		System.out.println(super.getPlateau());
 		do {
+			if(questionFinDePartie()) {
+				break;
+			}
+			
 			int col = Integer.parseInt(saisie());
 			int cptLignes = super.getPlateau().getNbLignes();
 			
@@ -133,9 +137,7 @@ public class Puissance4 extends Jeu2JoueursAPion {
 			}
 		} while(!isFinDePartie());
 
-		
-
-	
+		return false;
 	}
 
 	@Override

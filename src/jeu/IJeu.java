@@ -8,5 +8,5 @@ public interface IJeu {
 	boolean isFinDePartie();
 	boolean isVainqueur(Joueur j);
 	String saisie();
-	void jouer();
+	boolean jouer();
 }

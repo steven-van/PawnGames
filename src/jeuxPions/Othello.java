@@ -310,12 +310,17 @@ public class Othello extends Jeu2JoueursAPion {
 	
 	/**
 	 * @brief commence une partie
+	 * @return true si l'utilisateur continue la partie ; false sinon
 	 */
 	@Override
-	public void jouer() {
+	public boolean jouer() {
 		boolean jPeutJouer=true;
 		int tour=0;
 		do {
+			if(questionFinDePartie()) {
+				break;
+			}
+			
 			tour++;
 			System.out.println("C'est aux "+super.getJoueurCourant().getCouleur()+"S de jouer (Pts : " + super.getJoueurCourant().getPts() + ") contre les "+super.getJoueurAdverse().getCouleur()+"S de jouer (Pts : " + super.getJoueurAdverse().getPts() + ")\n");
 			
@@ -384,6 +389,9 @@ public class Othello extends Jeu2JoueursAPion {
 			System.out.println("-------------------------------------");
 		} while(!this.isFinDePartie());
 		
+		if(getQuitterPartie()) {
+			return false;
+		}
 		Joueur vainqueur = 
 				isVainqueur(super.getJoueur1()) ? 
 						super.getJoueur1() : 
@@ -395,7 +403,7 @@ public class Othello extends Jeu2JoueursAPion {
 		} else {
 			System.out.println(vainqueur + " a gagné avec "+vainqueur.getPts()+" pts contre les "+perdant.getCouleur()+" avec "+perdant.getPts()+" pts.");
 		}
-
+		return false;
 	}
 
 }

@@ -1,5 +1,7 @@
 package jeuxPions;
 
+import java.util.Scanner;
+
 import jeu.IJeu;
 import jeu.Joueur;
 import utileJeux.Coord;
@@ -17,6 +19,9 @@ public abstract class Jeu2JoueursAPion implements IJeu {
 	
 	// le joueur courant
 	private Joueur joueurCourant;
+	
+	// si le joueur veut quitter la partie
+	private boolean quitterPartie = false;
 
 	/**
 	 * @brief constructeur de Jeu2JoueursAPion
@@ -86,10 +91,48 @@ public abstract class Jeu2JoueursAPion implements IJeu {
 	public abstract String saisie();
 
 	/**
+	 * @return true si l'utilisateur veut quitter la partie
+	 */
+	public boolean questionFinDePartie() {
+		System.out.println("Voulez-vous quitter la partie? (1) oui ; ailleurs sinon");
+		Scanner sc = new Scanner(System.in);
+		String choix = sc.next();
+		choix = choix.trim();
+		
+		if(!choix.isEmpty()) {
+			try {
+				int choixInt = Integer.parseInt(choix);
+		        if(choixInt == 1) {
+		        	this.quitterPartie = true;
+					System.out.println("quitter");
+					return true;
+				} else {
+					this.quitterPartie = false;
+					return false;
+				}
+			} catch (NumberFormatException nfe) {
+				this.quitterPartie = false;
+				return false;
+		    }
+		} else {
+			this.quitterPartie = false;
+			return false;
+		}
+	}
+	
+	/**
+	 * @return quitterPartie 
+	 */
+	public boolean getQuitterPartie() {
+		return this.quitterPartie;
+	}
+	
+	/**
 	 * @brief commence une partie (à spécialiser)
+	 * @return true si l'utilisateur continue la partie ; false sinon
 	 */
 	@Override
-	public abstract void jouer();
+	public abstract boolean jouer();
 
 	/**
 	 * @return true si c'est la fin de partie ; false sinon (à spécialiser)
