@@ -9,18 +9,32 @@ import utileJeux.Directions;
 import utileJeux.Plateau;
 
 public class Puissance4 extends Jeu2JoueursAPion {
+	// le nombre de ligne du plateau
 	private static final int NB_LIGNE_PAR_DEFAUT = 6;
+	// le nombre de colonne du plateau
 	private static final int NB_COLONNE_PAR_DEFAUT 	= 7;
 	
+	/**
+	 * constructeur du Puissance4
+	 * @param joueur1 : le joueur 1 
+	 * @param joueur2 : le joueur 2
+	 */
 	public Puissance4(Joueur joueur1, Joueur joueur2) {
 		super(new Plateau(NB_LIGNE_PAR_DEFAUT,NB_COLONNE_PAR_DEFAUT), joueur1, joueur2);
 		super.setJoueurCourant(getPremierJoueur());
 	}
 	
+	/**
+	 * @brief initialisation du jeu
+	 */
 	@Override
 	public void initialisationJeu() {
 	}
 
+	/**
+	 * @param j : le joueur
+	 * @return true si le joueur est vainqueur ; false sinon
+	 */
 	@Override
 	public boolean isVainqueur(Joueur j) {
 		int ligMax = super.getPlateau().getNbLignes();
@@ -30,21 +44,6 @@ public class Puissance4 extends Jeu2JoueursAPion {
 		for(int indiceLig=1; indiceLig<=ligMax; indiceLig++) {
 			for(int indiceCol=1; indiceCol<=colMax; indiceCol++) {
 				
-				/*if (this.getPlateau().getTabCases()[indiceLig][indiceCol] != null) {
-					if ( indiceCol<=colMax 	&& compterJeton(indiceLig, indiceCol, 1, 1) == 4
-				 			// diagonale : vers le bas et à droite 
-						|| indiceCol<=colMax && compterJeton(indiceLig, indiceCol, -1, 1) == 4
-							// vers le haut et à droite
-						|| indiceLig<=ligMax  && compterJeton(indiceLig, indiceCol, 0, 1) == 4
-							// horizontal vers la droite
-						|| indiceLig<= ligMax && compterJeton(indiceLig, indiceCol, 1, 0) == 4
-							// vertical du haut vers le bas
-						) {
-						System.out.println("Le joueur" + j + " a gagné");
-						return true;
-					}
-				}
-				*/
 				Coord coordTmp = new Coord(indiceCol, indiceLig);
 				if(super.getPlateau().getCase(coordTmp) != null) {
 					// pour chaque direction
@@ -91,7 +90,10 @@ public class Puissance4 extends Jeu2JoueursAPion {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * @return la chaine de caractères saisie au clavier
+	 */
 	@Override
 	public String saisie() {
 		Scanner scanner = new Scanner(System.in);
@@ -108,10 +110,18 @@ public class Puissance4 extends Jeu2JoueursAPion {
 		return Integer.toString(col);
 	}
 
+	/**
+	 * @brief commence une partie
+	 * @return true si l'utilisateur continue la partie ; false sinon
+	 */
 	@Override
-	public void jouer() {
+	public boolean jouer() {
 		System.out.println(super.getPlateau());
 		do {
+			if(questionFinDePartie()) {
+				break;
+			}
+			
 			int col = Integer.parseInt(saisie());
 			int cptLignes = super.getPlateau().getNbLignes();
 			
@@ -133,11 +143,13 @@ public class Puissance4 extends Jeu2JoueursAPion {
 			}
 		} while(!isFinDePartie());
 
-		
-
-	
+		return false;
 	}
 
+	/**
+	 * @param c : la coordonnée
+	 * @return true s'il est possible de jouer cette coordonnée ; false sinon
+	 */
 	@Override
 	public boolean peutJouer(Coord c) {
 		if(super.getPlateau().getCase(c) == null) {
@@ -147,6 +159,9 @@ public class Puissance4 extends Jeu2JoueursAPion {
 		}
 	}
 
+	/**
+	 * @return le premier joueur à jouer
+	 */
 	@Override
 	public Joueur getPremierJoueur() {
 		int min = 0;
@@ -156,6 +171,9 @@ public class Puissance4 extends Jeu2JoueursAPion {
 		return j;
 	}
 
+	/**
+	 * @return true si c'est la fin de partie ; false sinon
+	 */
 	@Override
 	public boolean isFinDePartie() {
 		if(isVainqueur(super.getJoueurAdverse()) || super.getPlateau().isFull()) {
@@ -166,25 +184,5 @@ public class Puissance4 extends Jeu2JoueursAPion {
 	
 	}
 	
-
-	
-	/*private int compterJeton(int lig, int col, int ligDir, int colDir)
-	{
-		int cpt = 0; 		// compte le nombre de jeton aligné
-		int ligCpt = lig;	// s'occupe de la direction de la ligne (nord ou sud) du comptage des jetons
-		int colCpt = col; 	// s'occupe de la direction la colonne (ouest ou est) du comptage des jetons
-
-		while(ligCpt >= 0 && ligCpt < this.getPlateau().getNbLignes() 
-				&& colCpt >= 0 && colCpt < this.getPlateau().getNbColonnes() 
-				&& this.getPlateau().getTabCases()[ligCpt][colCpt].getCouleur() == this.getPlateau().getTabCases()[lig][col].getCouleur() 
-		{
-			ligCpt += ligDir; 
-			colCpt += colDir;
-			cpt++;
-		}
-
-		return cpt;
-	}
-	*/
 
 }
