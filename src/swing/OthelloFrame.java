@@ -11,23 +11,31 @@ import utileJeux.*;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
-public class OthelloFrame {
+import java.io.IOException;
+import java.io.OutputStream;
+
+public class OthelloFrame extends OutputStream{
 	
 	JFrame OthelloFrame;
+	JPanel plateauOthello = new JPanel();
+	
+	
 	private Jeu2JoueursAPion jeu;
 	
 	/**
-	 * Create the application.
+	 * @brief Creer l'application
+	 * @param joueur1 : le joueur 1
+	 * @param joueur2 : le joueur 2
 	 */
 	public OthelloFrame(Joueur j1, Joueur j2) {
 		IJeu jeu = new Othello(j1, j2);
 		this.jeu = (Jeu2JoueursAPion) jeu;
-		// jeu.jouer();
+		//jeu.jouer();
 		initialize();
 	}
 	
 	/**
-	 * Boutons
+	 * @return bouuton de couleur differente
 	 */
 	public static class Boutons {
     	public static Component getBoutonBlanc() {
@@ -55,12 +63,19 @@ public class OthelloFrame {
     		JButton jCaseChoix = new JButton();
         	jCaseChoix.setBackground(Color.decode("#DF5746"));
         	jCaseChoix.setOpaque(true);
+        	/*jCaseChoix.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
+                	plateauOthello.remove(jCaseChoix);
+                	plateauOthello.add(Boutons.getBoutonNoir());
+                }
+            });*/
         	return jCaseChoix;
     	}
     }
 
-	/**
-	 * Generer le plateau
+	 /**
+	 * @brief Genere le plateau composer de boutons
+	 * @param Le panel ou figure le plateau
 	 */
 	public void afficherPlateau(JPanel plateauOthello) {
 		plateauOthello.setLayout(new GridLayout (8, 8, 10, 10));
@@ -80,21 +95,13 @@ public class OthelloFrame {
                     }
                 } else {
                  	plateauOthello.add(Boutons.getBoutonCase());
-
-                	/*jCaseChoix.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent ae) {
-                        	plateauOthello.remove(jCaseChoix);
-                        	
-                        	plateauOthello.add(Boutons.getBoutonNoir());
-                        }
-                    });**/
                 } 
             }
         }
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * @brief Initialise le contenu de la fenetre
 	 */
 	private void initialize() {
 		OthelloFrame = new JFrame();
@@ -104,9 +111,7 @@ public class OthelloFrame {
 		OthelloFrame.setLocationRelativeTo(null);
 		OthelloFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel plateauOthello = new JPanel();
 		this.afficherPlateau(plateauOthello);
-        OthelloFrame.getContentPane().add(plateauOthello);
 		OthelloFrame.getContentPane().add(plateauOthello, BorderLayout.CENTER);
         
         /**
@@ -115,7 +120,13 @@ public class OthelloFrame {
         JLabel labelDialogue = DefaultComponentFactory.getInstance().createLabel("Tour du joueur (NOIR)");
         labelDialogue.setBounds(0, 0, 650, 00);
         labelDialogue.setOpaque(true);
-        int delay = 2000; //milliseconds
+        labelDialogue.setHorizontalAlignment(SwingConstants.CENTER);
+        labelDialogue.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
+        OthelloFrame.getContentPane().add(labelDialogue, BorderLayout.NORTH);
+        
+        // Code permetant de changer le texte au sein d'un JLabel
+        
+        /*int delay = 2000; //milliseconds
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 //...Perform a task...
@@ -123,11 +134,7 @@ public class OthelloFrame {
             	labelDialogue.setFont(new Font("Lucida Grande", Font.PLAIN, 23));
             }
         };
-        new Timer(delay, taskPerformer).start();
-
-        labelDialogue.setHorizontalAlignment(SwingConstants.CENTER);
-        labelDialogue.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
-        OthelloFrame.getContentPane().add(labelDialogue, BorderLayout.NORTH);
+        new Timer(delay, taskPerformer).start(); */
 		
 		/**
 		 * Menu
@@ -135,19 +142,37 @@ public class OthelloFrame {
 		JMenuBar menuBar = new JMenuBar();
 		OthelloFrame.setJMenuBar(menuBar);
 		
+		/**
+		 * Recommencer la partie
+		 */
 		JMenuItem menuItemNewgame = new JMenuItem("Nouvelle Partie");
+		menuItemNewgame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Joueur j1 = new Joueur(Couleurs.NOIR);
+				Joueur j2 = new Joueur(Couleurs.BLANC);
+				OthelloFrame oFrame = new OthelloFrame(j1, j2);
+				oFrame.OthelloFrame.setVisible(true);
+				OthelloFrame.dispose();
+			}
+		});
 		menuBar.add(menuItemNewgame);
 		
+		/**
+		 * Retour au menu
+		 */
 		JMenuItem menuItemReturn = new JMenuItem("Retour");
 		menuItemReturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                 JeuGUI mainFrame = new JeuGUI();
                 mainFrame.setVisible(true);
-                OthelloFrame.dispose();   
+                OthelloFrame.dispose();
             }
         });
 		menuBar.add(menuItemReturn);
 		
+		/**
+		 * Quitter
+		 */
 		JMenuItem menuItemQuit = new JMenuItem("Quitter");
 		menuItemQuit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
@@ -155,6 +180,13 @@ public class OthelloFrame {
             }
         });
 		menuBar.add(menuItemQuit);
+	}
+	
+	// Tests
+	@Override
+	public void write(int b) throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

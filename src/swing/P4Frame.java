@@ -1,73 +1,38 @@
 package swing;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.Timer;
+import java.awt.*;
+import javax.swing.*;
 import javax.swing.border.Border;
 
-import com.jgoodies.forms.factories.DefaultComponentFactory;
+import java.awt.event.*;
 
 import jeu.IJeu;
 import jeu.Joueur;
-import jeuxPions.Jeu2JoueursAPion;
-import jeuxPions.Othello;
-import jeuxPions.Puissance4;
-import swing.OthelloFrame.Boutons;
-import utileJeux.Coord;
-import utileJeux.Couleurs;
-import java.awt.Button;
+import jeuxPions.*;
+import pions.Pion;
+import utileJeux.*;
+
+import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 public class P4Frame {
 
 	JFrame P4Frame;
 	private Jeu2JoueursAPion jeu;
-	
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					P4Frame window = new P4Frame();
-					window.P4Frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	/**
-	 * Create the application.
+	 * @brief Creer l'application
+	 * @param joueur1 : le joueur 1
+	 * @param joueur2 : le joueur 2
 	 */
 	public P4Frame(Joueur j1, Joueur j2) {
 		IJeu jeu = new Puissance4(j1, j2);
 		this.jeu = (Jeu2JoueursAPion) jeu;
+		//jeu.jouer();
 		initialize();
 	}
 	
 	/**
-	 * Classe pour arrondir les boutons
+	 * @brief classe pour arrondir les boutons
 	 */
 	private static class RoundedBorder implements Border {
 
@@ -96,20 +61,24 @@ public class P4Frame {
 	}
 
 	/**
-	 * Boutons
+	 * @return bouuton de couleur differente
 	 */
 	public static class Boutons {
     	public static Component getBoutonJaune() {
     		JButton jCaseJaune = new JButton();
+    		jCaseJaune.setForeground(Color.decode("#FFFF00"));
+    		jCaseJaune.setBorder(new RoundedBorder(100));
     		jCaseJaune.setBackground(Color.decode("#FFFF00"));
-    		jCaseJaune.setOpaque(true);
+    		jCaseJaune.setOpaque(false);
         	return jCaseJaune;
     	}
     	
     	public static Component getBoutonRouge() {
     		JButton jCaseRouge = new JButton();
+    		jCaseRouge.setForeground(Color.decode("#006400"));
+    		jCaseRouge.setBorder(new RoundedBorder(100));
     		jCaseRouge.setBackground(Color.decode("#006400"));
-    		jCaseRouge.setOpaque(true);
+    		jCaseRouge.setOpaque(false);
         	return jCaseRouge;
     	}
     	
@@ -125,8 +94,7 @@ public class P4Frame {
     }
 	
 	/**
-	 * Obtenir la position d'un bouton
-	 * @return 
+	 * @return la position en pixel d'un bouton
 	 */
 	public float getLocationXButton(JButton jCaseChoix) {
 		float xPos = jCaseChoix.getAlignmentX();
@@ -139,19 +107,31 @@ public class P4Frame {
 	}
 	
 	/**
-	 * Generer le plateau
+	 * @brief Genere le plateau composer de boutons
+	 * @param Le panel ou figure le plateau
 	 */
 	public void afficherPlateau(JPanel plateauP4) {
 		plateauP4.setLayout(new GridLayout (6, 7, 10, 10));
 		for (int i = 1; i <= this.jeu.getPlateau().getNbColonnes(); i++) {
-            for (int j = 1; j <= this.jeu.getPlateau().getNbLignes(); j++) {	
-                	plateauP4.add(Boutons.getBoutonCase());
+            for (int j = 1; j <= this.jeu.getPlateau().getNbLignes(); j++) {
+            	
+            	if (this.jeu.getPlateau().getCase(new Coord(i, j)) != null) {
+            	
+	            	if (this.jeu.getPlateau().getCase(new Coord(i, j)).getCouleur() == Couleurs.JAUNE) {
+	                	plateauP4.add(Boutons.getBoutonJaune());
+	            	}
+	            	else if (this.jeu.getPlateau().getCase(new Coord(i, j)).getCouleur() == Couleurs.ROUGE)  {
+	            		plateauP4.add(Boutons.getBoutonRouge());
+	            	}
+
+            	}
+            	plateauP4.add(Boutons.getBoutonCase());
             }
 		}
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * @brief Initialise le contenu de la fenetre
 	 */
 	private void initialize() {
 		P4Frame = new JFrame();
@@ -173,44 +153,39 @@ public class P4Frame {
 		P4Frame.getContentPane().add(plateauP4, BorderLayout.CENTER);
 		
 		/**
-		 * Boutons pour choisir la colonne
+		 * Zone de saisie pour choisir la colonne
 		 */
-		JPanel choixColonne = new JPanel();
-		choixColonne.setBounds(10, 10, 580, 50);
-		choixColonne.setLayout(new GridLayout (1, 7, 10, 10));
-		for (int i = 1; i <= this.jeu.getPlateau().getNbColonnes(); i++) {
-			JButton jCaseChoix = new JButton("v");
-			jCaseChoix.setFont(new Font("AppleGothic 13", Font.PLAIN, 25));
-			jCaseChoix.setBackground(Color.decode("#FFFFFF"));
-			jCaseChoix.setOpaque(true);
-    		choixColonne.add(jCaseChoix);
-    		
-    		jCaseChoix.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent ae) {
-                	
-                	for (int i = 1; i <= jeu.getPlateau().getNbColonnes(); i++) {
-                    	if (getLocationXButton(jCaseChoix) == i) {
-                    		for (int j = 6; j >= jeu.getPlateau().getNbLignes(); j--) {
-                    			
-                    			plateauP4.add(Boutons.getBoutonRouge());
-                    			
-                        	}
-                        }
-            		}
-                }
-            });
-		}
-		P4Frame.getContentPane().add(choixColonne, BorderLayout.CENTER);
+		JPanel panelChoix = new JPanel();
+		panelChoix.setBackground(new Color(33, 33, 33));
+		panelChoix.setOpaque(true);
+		panelChoix.setBounds(10, 582, 580, 58);
+		P4Frame.getContentPane().add(panelChoix);
+		panelChoix.setLayout(null);
+		
+		JLabel lblSaisie = DefaultComponentFactory.getInstance().createLabel("Choix de colonne (1 - 7) :");
+		lblSaisie.setForeground(new Color(255, 245, 238));
+		lblSaisie.setBounds(116, 18, 249, 25);
+		lblSaisie.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSaisie.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		panelChoix.add(lblSaisie);
+		
+		TextField textField = new TextField();
+		textField.setBounds(377 , 18, 51, 25);
+		textField.setBackground(new Color(255, 255, 255));
+		panelChoix.add(textField);
 		
 		/**
     	 * Zone de texte : Dialogue affichant les instructions.
     	 */
-		JLabel lblDialogue = DefaultComponentFactory.getInstance().createLabel("Tour du joueur 1");
-		lblDialogue.setBackground(new Color(255, 250, 250));
+		JLabel lblDialogue = DefaultComponentFactory.getInstance().createLabel("Tour du joueur ROUGE");
+		lblDialogue.setForeground(new Color(255, 235, 205));
+		lblDialogue.setFont(new Font("Lucida Grande", Font.PLAIN, 23));
+		lblDialogue.setBackground(new Color(33, 33, 33));
 		lblDialogue.setOpaque(true);
 		lblDialogue.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDialogue.setBounds(10, 582, 580, 50);
+		lblDialogue.setBounds(10, 8, 580, 50);
 		P4Frame.getContentPane().add(lblDialogue);
+		
 
 		/**
 		 * Menu
@@ -218,9 +193,24 @@ public class P4Frame {
 		JMenuBar menuBar = new JMenuBar();
 		P4Frame.setJMenuBar(menuBar);
 		
+		/**
+		 * Recommencer la partie
+		 */
 		JMenuItem menuItemNewgame = new JMenuItem("Nouvelle Partie");
+		menuItemNewgame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Joueur j1 = new Joueur(Couleurs.JAUNE);
+				Joueur j2 = new Joueur(Couleurs.ROUGE);
+				P4Frame pFrame = new P4Frame(j1, j2);
+				pFrame.P4Frame.setVisible(true);
+				P4Frame.dispose();
+			}
+		});
 		menuBar.add(menuItemNewgame);
 		
+		/**
+		 * Retour au menu
+		 */
 		JMenuItem menuItemReturn = new JMenuItem("Retour");
 		menuItemReturn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -231,6 +221,9 @@ public class P4Frame {
         });
 		menuBar.add(menuItemReturn);
 		
+		/**
+		 * Quitter
+		 */
 		JMenuItem menuItemQuit = new JMenuItem("Quitter");
 		menuItemQuit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {

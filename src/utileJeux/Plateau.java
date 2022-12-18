@@ -75,10 +75,6 @@ public class Plateau {
 		return c.getY() > 0 && c.getY() <= this.nbLignes && c.getX() > 0 && c.getX() <= this.nbColonnes;
 	}
 	
-	/**
-	 * @param c : la coordonnée du plateau
-	 * @return true si la coordonnée fait partie du plateau ; false sinon
-	 */
 	@Override
 	public String toString() {
 		StringBuilder bld = new StringBuilder();

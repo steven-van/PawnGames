@@ -25,26 +25,9 @@ import java.awt.event.*;
 public class JeuGUI extends JFrame {
 
 	JPanel contentPanel;
-	
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JeuGUI frame = new JeuGUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
+	 * @brief creer la JFrame : fenetre principal
 	 */
 	public JeuGUI() {	
 		setTitle("PawnGames");

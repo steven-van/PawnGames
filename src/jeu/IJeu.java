@@ -34,7 +34,7 @@ public interface IJeu {
 	boolean isVainqueur(Joueur j);
 	
 	/**
-	 * @return la chaine de caractères saisie au clavier (à spécialiser)
+	 * @return la chaine de caractères saisie au clavier 
 	 */
 	String saisie();
 

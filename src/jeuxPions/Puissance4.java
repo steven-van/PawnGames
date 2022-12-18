@@ -92,7 +92,7 @@ public class Puissance4 extends Jeu2JoueursAPion {
 	}
 	
 	/**
-	 * @return la chaine de caractères saisie au clavier (à spécialiser)
+	 * @return la chaine de caractères saisie au clavier
 	 */
 	@Override
 	public String saisie() {
