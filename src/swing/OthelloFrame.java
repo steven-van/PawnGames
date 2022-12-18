@@ -17,13 +17,15 @@ import java.io.OutputStream;
 public class OthelloFrame extends OutputStream{
 	
 	JFrame OthelloFrame;
-	static JPanel plateauOthello = new JPanel();
+	JPanel plateauOthello = new JPanel();
 	
 	
 	private Jeu2JoueursAPion jeu;
 	
 	/**
-	 * Create the application.
+	 * @brief Creer l'application
+	 * @param joueur1 : le joueur 1
+	 * @param joueur2 : le joueur 2
 	 */
 	public OthelloFrame(Joueur j1, Joueur j2) {
 		IJeu jeu = new Othello(j1, j2);
@@ -33,7 +35,7 @@ public class OthelloFrame extends OutputStream{
 	}
 	
 	/**
-	 * Boutons
+	 * @return bouuton de couleur differente
 	 */
 	public static class Boutons {
     	public static Component getBoutonBlanc() {
@@ -71,8 +73,9 @@ public class OthelloFrame extends OutputStream{
     	}
     }
 
-	/**
-	 * Generer le plateau
+	 /**
+	 * @brief Genere le plateau composer de boutons
+	 * @param Le panel ou figure le plateau
 	 */
 	public void afficherPlateau(JPanel plateauOthello) {
 		plateauOthello.setLayout(new GridLayout (8, 8, 10, 10));
@@ -98,7 +101,7 @@ public class OthelloFrame extends OutputStream{
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * @brief Initialise le contenu de la fenetre
 	 */
 	private void initialize() {
 		OthelloFrame = new JFrame();
@@ -109,7 +112,6 @@ public class OthelloFrame extends OutputStream{
 		OthelloFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		this.afficherPlateau(plateauOthello);
-        OthelloFrame.getContentPane().add(plateauOthello);
 		OthelloFrame.getContentPane().add(plateauOthello, BorderLayout.CENTER);
         
         /**
@@ -118,6 +120,12 @@ public class OthelloFrame extends OutputStream{
         JLabel labelDialogue = DefaultComponentFactory.getInstance().createLabel("Tour du joueur (NOIR)");
         labelDialogue.setBounds(0, 0, 650, 00);
         labelDialogue.setOpaque(true);
+        labelDialogue.setHorizontalAlignment(SwingConstants.CENTER);
+        labelDialogue.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
+        OthelloFrame.getContentPane().add(labelDialogue, BorderLayout.NORTH);
+        
+        // Code permetant de changer le texte au sein d'un JLabel
+        
         /*int delay = 2000; //milliseconds
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -127,10 +135,6 @@ public class OthelloFrame extends OutputStream{
             }
         };
         new Timer(delay, taskPerformer).start(); */
-
-        labelDialogue.setHorizontalAlignment(SwingConstants.CENTER);
-        labelDialogue.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
-        OthelloFrame.getContentPane().add(labelDialogue, BorderLayout.NORTH);
 		
 		/**
 		 * Menu
@@ -139,12 +143,16 @@ public class OthelloFrame extends OutputStream{
 		OthelloFrame.setJMenuBar(menuBar);
 		
 		/**
-		 * Recommencer
+		 * Recommencer la partie
 		 */
 		JMenuItem menuItemNewgame = new JMenuItem("Nouvelle Partie");
 		menuItemNewgame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO
+				Joueur j1 = new Joueur(Couleurs.NOIR);
+				Joueur j2 = new Joueur(Couleurs.BLANC);
+				OthelloFrame oFrame = new OthelloFrame(j1, j2);
+				oFrame.OthelloFrame.setVisible(true);
+				OthelloFrame.dispose();
 			}
 		});
 		menuBar.add(menuItemNewgame);
@@ -173,7 +181,8 @@ public class OthelloFrame extends OutputStream{
         });
 		menuBar.add(menuItemQuit);
 	}
-
+	
+	// Tests
 	@Override
 	public void write(int b) throws IOException {
 		// TODO Auto-generated method stub

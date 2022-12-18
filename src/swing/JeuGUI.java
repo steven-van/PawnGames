@@ -28,7 +28,7 @@ public class JeuGUI extends JFrame {
 	
 
 	/**
-	 * Launch the application.
+	 * @brief Lance l'application
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -44,7 +44,7 @@ public class JeuGUI extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * @brief creer la JFrame : fenetre principal
 	 */
 	public JeuGUI() {	
 		setTitle("PawnGames");

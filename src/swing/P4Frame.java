@@ -20,7 +20,9 @@ public class P4Frame {
 	private Jeu2JoueursAPion jeu;
 
 	/**
-	 * Create the application.
+	 * @brief Creer l'application
+	 * @param joueur1 : le joueur 1
+	 * @param joueur2 : le joueur 2
 	 */
 	public P4Frame(Joueur j1, Joueur j2) {
 		IJeu jeu = new Puissance4(j1, j2);
@@ -30,7 +32,7 @@ public class P4Frame {
 	}
 	
 	/**
-	 * Classe pour arrondir les boutons
+	 * @brief classe pour arrondir les boutons
 	 */
 	private static class RoundedBorder implements Border {
 
@@ -59,7 +61,7 @@ public class P4Frame {
 	}
 
 	/**
-	 * Boutons
+	 * @return bouuton de couleur differente
 	 */
 	public static class Boutons {
     	public static Component getBoutonJaune() {
@@ -92,8 +94,7 @@ public class P4Frame {
     }
 	
 	/**
-	 * Obtenir la position d'un bouton
-	 * @return 
+	 * @return la position en pixel d'un bouton
 	 */
 	public float getLocationXButton(JButton jCaseChoix) {
 		float xPos = jCaseChoix.getAlignmentX();
@@ -106,7 +107,8 @@ public class P4Frame {
 	}
 	
 	/**
-	 * Generer le plateau
+	 * @brief Genere le plateau composer de boutons
+	 * @param Le panel ou figure le plateau
 	 */
 	public void afficherPlateau(JPanel plateauP4) {
 		plateauP4.setLayout(new GridLayout (6, 7, 10, 10));
@@ -129,7 +131,7 @@ public class P4Frame {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * @brief Initialise le contenu de la fenetre
 	 */
 	private void initialize() {
 		P4Frame = new JFrame();
@@ -151,7 +153,7 @@ public class P4Frame {
 		P4Frame.getContentPane().add(plateauP4, BorderLayout.CENTER);
 		
 		/**
-		 * Boutons pour choisir la colonne
+		 * Zone de saisie pour choisir la colonne
 		 */
 		JPanel panelChoix = new JPanel();
 		panelChoix.setBackground(new Color(33, 33, 33));
@@ -192,7 +194,7 @@ public class P4Frame {
 		P4Frame.setJMenuBar(menuBar);
 		
 		/**
-		 * Recommencer
+		 * Recommencer la partie
 		 */
 		JMenuItem menuItemNewgame = new JMenuItem("Nouvelle Partie");
 		menuItemNewgame.addActionListener(new ActionListener() {
