@@ -47,7 +47,12 @@ public class Appli {
 							continue;
 						}
 					} else if(choixInt == 3) {
-						new JeuGUI();
+						try {
+							JeuGUI frame = new JeuGUI();
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					} else if (choixInt == 4) {
 						break;
 					} else {
