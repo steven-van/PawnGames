@@ -53,7 +53,11 @@ public class JeuGUI extends JFrame {
 		JMenuItem menuItemRules = new JMenuItem("Règles");
 		menuItemRules.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,"...","Règles du jeu",JOptionPane.CLOSED_OPTION);              
+                JOptionPane.showMessageDialog(null,"Puissance 4\n\nPour gagner une partie de puissance 4, il suffit d’être le premier à aligner 4 " +
+            "jetons de sa couleur horizontalement, verticalement et diagonalement.\nSi lors d’une partie, tous les jetons sont joués sans qu’il y " +
+                		"est d’alignement de jetons, la partie est déclaré nulle.\n\nOthello\n\nLe principe est de placer ses pions réversibles " +
+            "(blancs et noirs) de part et d’autre de ceux de son adversaire pour retourner tous ceux qui figurent entre 2 pions de sa couleur.\n" +
+                		"Le joueur qui a le plus de pions de sa couleur remporte la partie. ","Règles du jeu",JOptionPane.CLOSED_OPTION);              
             }
         });
 		menuInfos.add(menuItemRules);
