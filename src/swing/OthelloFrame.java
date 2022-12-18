@@ -11,9 +11,15 @@ import utileJeux.*;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
-public class OthelloFrame {
+import java.io.IOException;
+import java.io.OutputStream;
+
+public class OthelloFrame extends OutputStream{
 	
 	JFrame OthelloFrame;
+	static JPanel plateauOthello = new JPanel();
+	
+	
 	private Jeu2JoueursAPion jeu;
 	
 	/**
@@ -22,7 +28,7 @@ public class OthelloFrame {
 	public OthelloFrame(Joueur j1, Joueur j2) {
 		IJeu jeu = new Othello(j1, j2);
 		this.jeu = (Jeu2JoueursAPion) jeu;
-		// jeu.jouer();
+		//jeu.jouer();
 		initialize();
 	}
 	
@@ -55,6 +61,12 @@ public class OthelloFrame {
     		JButton jCaseChoix = new JButton();
         	jCaseChoix.setBackground(Color.decode("#DF5746"));
         	jCaseChoix.setOpaque(true);
+        	/*jCaseChoix.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
+                	plateauOthello.remove(jCaseChoix);
+                	plateauOthello.add(Boutons.getBoutonNoir());
+                }
+            });*/
         	return jCaseChoix;
     	}
     }
@@ -80,14 +92,6 @@ public class OthelloFrame {
                     }
                 } else {
                  	plateauOthello.add(Boutons.getBoutonCase());
-
-                	/*jCaseChoix.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent ae) {
-                        	plateauOthello.remove(jCaseChoix);
-                        	
-                        	plateauOthello.add(Boutons.getBoutonNoir());
-                        }
-                    });**/
                 } 
             }
         }
@@ -104,7 +108,6 @@ public class OthelloFrame {
 		OthelloFrame.setLocationRelativeTo(null);
 		OthelloFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel plateauOthello = new JPanel();
 		this.afficherPlateau(plateauOthello);
         OthelloFrame.getContentPane().add(plateauOthello);
 		OthelloFrame.getContentPane().add(plateauOthello, BorderLayout.CENTER);
@@ -115,7 +118,7 @@ public class OthelloFrame {
         JLabel labelDialogue = DefaultComponentFactory.getInstance().createLabel("Tour du joueur (NOIR)");
         labelDialogue.setBounds(0, 0, 650, 00);
         labelDialogue.setOpaque(true);
-        int delay = 2000; //milliseconds
+        /*int delay = 2000; //milliseconds
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 //...Perform a task...
@@ -123,7 +126,7 @@ public class OthelloFrame {
             	labelDialogue.setFont(new Font("Lucida Grande", Font.PLAIN, 23));
             }
         };
-        new Timer(delay, taskPerformer).start();
+        new Timer(delay, taskPerformer).start(); */
 
         labelDialogue.setHorizontalAlignment(SwingConstants.CENTER);
         labelDialogue.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
@@ -135,19 +138,33 @@ public class OthelloFrame {
 		JMenuBar menuBar = new JMenuBar();
 		OthelloFrame.setJMenuBar(menuBar);
 		
+		/**
+		 * Recommencer
+		 */
 		JMenuItem menuItemNewgame = new JMenuItem("Nouvelle Partie");
+		menuItemNewgame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//TODO
+			}
+		});
 		menuBar.add(menuItemNewgame);
 		
+		/**
+		 * Retour au menu
+		 */
 		JMenuItem menuItemReturn = new JMenuItem("Retour");
 		menuItemReturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                 JeuGUI mainFrame = new JeuGUI();
                 mainFrame.setVisible(true);
-                OthelloFrame.dispose();   
+                OthelloFrame.dispose();
             }
         });
 		menuBar.add(menuItemReturn);
 		
+		/**
+		 * Quitter
+		 */
 		JMenuItem menuItemQuit = new JMenuItem("Quitter");
 		menuItemQuit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
@@ -155,6 +172,12 @@ public class OthelloFrame {
             }
         });
 		menuBar.add(menuItemQuit);
+	}
+
+	@Override
+	public void write(int b) throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
