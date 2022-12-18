@@ -19,20 +19,33 @@ public class Othello extends Jeu2JoueursAPion {
 	// joueur 1 = NOIRS
 	// joueur 2 = BLANC
 
+	// la longueur du côté du plateau (car c'est un carré)
 	private final static int COTE = 8;
 
 	// les coords des pions attaquables par coord de coup possible
 	Map coupsPossibles = new HashMap<Coord, Coord[]>();
+	
+	// le nombre de pions attaquables par coord de coup possible
 	Map nbPionsAttaquables = new HashMap<Coord, Integer>();
 
+	// indicateur permettant de savoir si aucun joueur ne peut jouer
 	boolean personnePeutJouer=false;
 	
+	/**
+	 * @brief constructeur de Othello
+	 * @param joueur1 : le joueur 1
+	 * @param joueur2 : le joueur 2
+	 */
 	public Othello(Joueur joueur1, Joueur joueur2) {
-		 super(new Plateau(COTE, COTE), joueur1, joueur2);
-		 initialisationJeu();
-		 super.setJoueurCourant(getPremierJoueur());
+		// appel du constructeur de la classe mère car héritage
+		super(new Plateau(COTE, COTE), joueur1, joueur2);
+		initialisationJeu();
+		super.setJoueurCourant(getPremierJoueur());
 	}
 	
+	/**
+	 * @brief initialisation du jeu
+	 */
 	@Override
 	public void initialisationJeu() {
 		Pion pNoir1 = new PionDeuxCouleurs(Couleurs.NOIR, Couleurs.BLANC);
@@ -47,22 +60,35 @@ public class Othello extends Jeu2JoueursAPion {
 		super.getJoueur2().incPts(2);
 	}
 
+	/**
+	 * @return le premier joueur à jouer
+	 */
 	@Override
 	public Joueur getPremierJoueur() {
 		return super.getJoueur1();
 	}
 
+	/**
+	 * @param j : le joueur
+	 * @return true si le joueur est vainqueur ; false sinon
+	 */
 	@Override
 	public boolean isVainqueur(Joueur j) {
 		Joueur joueurAdverse = (j.getCouleur() == super.getJoueurCourant().getCouleur()) ? super.getJoueurAdverse() : super.getJoueurCourant();
 		return (j.getPts() > joueurAdverse.getPts());
 	}
 	
+	/**
+	 * @return true si c'est la fin de partie ; false sinon
+	 */
 	@Override
 	public boolean isFinDePartie() {
 		return super.getPlateau().isFull() || super.getJoueurCourant().getPts()<=0  || super.getJoueurAdverse().getPts()<=0 || this.personnePeutJouer;
 	}
 	
+	/**
+	 * @return true s'il y a des coups possibles à jouer par le joueur courant ; false sinon
+	 */
 	@SuppressWarnings("unchecked")
 	public boolean searchCoupsPossibles() {
 		// case fait partie du plateau
@@ -216,6 +242,9 @@ public class Othello extends Jeu2JoueursAPion {
 		return keyArray[i];
 	}
 	
+	/**
+	 * @brief remet à null toutes les cases non occupées du plateau
+	 */
 	private void remettreNullCoupsPossibles() {
 		Iterator<Map.Entry<Coord, Coord[]>> iterator = this.coupsPossibles.entrySet().iterator();
 		while (iterator.hasNext()) {
@@ -224,7 +253,10 @@ public class Othello extends Jeu2JoueursAPion {
         }
 	}
 	
-	private void poserNullCoupsPossibles() {
+	/**
+	 * @brief met aux cases des coups possibles l'indice correspondant au coup présenté
+	 */
+	private void poserCoupsPossibles() {
 		int j=0;
 		Iterator<Map.Entry<Coord, Coord[]>> iterator = this.coupsPossibles.entrySet().iterator();
 		while (iterator.hasNext()) {
@@ -235,6 +267,9 @@ public class Othello extends Jeu2JoueursAPion {
         }
 	}
 
+	/**
+	 * @return la chaine de caractères indiquant les coups possibles
+	 */
 	private String afficherCoupsPossibles() {
 		int j=0;
 		StringBuilder str = new StringBuilder();
@@ -254,6 +289,9 @@ public class Othello extends Jeu2JoueursAPion {
 		return str.toString();
 	}
 	
+	/**
+	 * @brief commence une partie
+	 */
 	@Override
 	public void jouer() {
 		boolean jPeutJouer=true;
@@ -266,7 +304,7 @@ public class Othello extends Jeu2JoueursAPion {
 			
 			if(searchCoupsPossibles()) {
 				
-				poserNullCoupsPossibles();
+				poserCoupsPossibles();
 				
 				System.out.println(this.getPlateau());
 				System.out.println("Coups possibles (colonne;ligne): ");
@@ -342,28 +380,3 @@ public class Othello extends Jeu2JoueursAPion {
 	}
 
 }
-
-/*
-int ligne=-1; int colonne=-1;
-String aSaisir = "colonne";
-do {
-	if(erreur) { 
-		System.out.println("Mauvaise saisie, veuillez entrer un nombre entre 1 et "+COTE);
-	}
-	else {
-		System.out.println("Veuillez entrer une "+aSaisir+" (1 à "+COTE+") du pion que vous voulez placer");
-	}
-	System.out.print("Votre choix : ");
-	saisi = scanner.nextInt();
-	if(!erreur) {
-		if(aSaisir == "colonne") {
-			aSaisir = "ligne";
-			colonne = saisi;
-		} else if(aSaisir == "ligne") {
-			ligne = saisi; break;
-		}
-	}
-	if(saisieValide = (saisi < 1 || saisi > COTE)){
-		erreur = true;
-	}
-} while (!saisieValide);*/
