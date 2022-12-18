@@ -25,23 +25,6 @@ import java.awt.event.*;
 public class JeuGUI extends JFrame {
 
 	JPanel contentPanel;
-	
-
-	/**
-	 * @brief Lance l'application
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JeuGUI frame = new JeuGUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * @brief creer la JFrame : fenetre principal
