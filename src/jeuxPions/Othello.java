@@ -156,6 +156,7 @@ public class Othello extends Jeu2JoueursAPion {
 						} while((caseTmp != null) && (!attaque));
 						
 					}
+					
 					// aucune case attaquable
 					if(nbPionsAttaquablesTmp > 0) {
 						Coord cTmp = new Coord(col, li);
@@ -168,6 +169,10 @@ public class Othello extends Jeu2JoueursAPion {
 		return (this.coupsPossibles.size() > 0);
 	}
 
+	/**
+	 * @param c : la coordonnée
+	 * @return true s'il est possible de jouer cette coordonnée ; false sinon
+	 */
 	@Override
 	public boolean peutJouer(Coord c) {
 		
@@ -185,11 +190,18 @@ public class Othello extends Jeu2JoueursAPion {
 	}
 	
 
+	/**
+	 * @brief initialise le tableau de coups possibles
+	 */
 	public void initCoupsPossibles() {
 		this.coupsPossibles = new HashMap<Coord, Coord[]>();
 		this.nbPionsAttaquables = new HashMap<Coord, Integer>();
 	}
 
+	/**
+	 * @param strNum : la chaine de caractères
+	 * @return true la chaine de caractères est un nombre ; false sinon
+	 */
 	// ----------------------
 	// source : https://www.baeldung.com/java-check-string-number
 	public static boolean isNumeric(String strNum) {
@@ -205,6 +217,9 @@ public class Othello extends Jeu2JoueursAPion {
 	}
 	// ----------------------
 	
+	/**
+	 * @return la chaine de caractères saisie au clavier (à spécialiser)
+	 */
 	@Override
 	public String saisie() {
 		Scanner scanner = new Scanner(System.in);
@@ -236,6 +251,10 @@ public class Othello extends Jeu2JoueursAPion {
 		return coordChoisie.getX() + ";" + coordChoisie.getY();
 	}
 	
+	/**
+	 * @param i : l'indice recherché
+	 * @return la coordonnée correspondant à un indice dans le tableau de coups possibles
+	 */
 	private Coord getCoupPossible(int i) {
 		Set<Coord> keySet = this.coupsPossibles.keySet();
 		Coord[] keyArray = keySet.toArray(new Coord[keySet.size()]);
