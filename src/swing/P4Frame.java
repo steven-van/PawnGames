@@ -9,7 +9,6 @@ import java.awt.event.*;
 import jeu.IJeu;
 import jeu.Joueur;
 import jeuxPions.*;
-import pions.Pion;
 import utileJeux.*;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;

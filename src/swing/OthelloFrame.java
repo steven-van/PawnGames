@@ -30,7 +30,7 @@ public class OthelloFrame extends OutputStream{
 	public OthelloFrame(Joueur j1, Joueur j2) {
 		IJeu jeu = new Othello(j1, j2);
 		this.jeu = (Jeu2JoueursAPion) jeu;
-		//jeu.jouer();
+		// jeu.jouer();
 		initialize();
 	}
 	
